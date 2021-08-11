@@ -64,10 +64,19 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D8j-zL-m4U">
+                                <rect key="frame" x="178.5" y="406" width="57" height="30"/>
+                                <state key="normal" title="POST!!!!"/>
+                                <connections>
+                                    <action selector="sendPost:" destination="ZiL-Cr-XBA" eventType="touchUpInside" id="H3r-zJ-N48"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="9Ij-3b-6tm"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="D8j-zL-m4U" firstAttribute="centerY" secondItem="FUz-EF-Trc" secondAttribute="centerY" id="0bu-bV-Cce"/>
+                            <constraint firstItem="D8j-zL-m4U" firstAttribute="centerX" secondItem="FUz-EF-Trc" secondAttribute="centerX" id="K8c-gH-udi"/>
                             <constraint firstItem="YL5-FF-kF4" firstAttribute="top" secondItem="9Ij-3b-6tm" secondAttribute="top" constant="161" id="U1L-on-Iel"/>
                             <constraint firstItem="YL5-FF-kF4" firstAttribute="leading" secondItem="9Ij-3b-6tm" secondAttribute="leading" constant="157" id="WFq-b7-O06"/>
                             <constraint firstItem="YL5-FF-kF4" firstAttribute="centerX" secondItem="FUz-EF-Trc" secondAttribute="centerX" id="dUd-A5-G5b"/>

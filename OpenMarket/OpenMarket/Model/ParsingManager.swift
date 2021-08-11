@@ -27,8 +27,5 @@ enum ParsingManager {
             throw ParsingError.decodingError
         }
     }
-    
-    static func createBody() {
-        //
-    }
+
 }

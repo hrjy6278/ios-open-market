@@ -19,6 +19,7 @@ struct OpenMarketItems: Codable {
         let stock: Int
         let discountedPrice: Int?
         let thumbnails: [String]
+        let images: [String]?
         let registrationDate: Double
         
         enum CodingKeys: String, CodingKey {
@@ -29,6 +30,7 @@ struct OpenMarketItems: Codable {
             case stock
             case discountedPrice = "discounted_price"
             case thumbnails
+            case images
             case registrationDate = "registration_date"
         }
     }
