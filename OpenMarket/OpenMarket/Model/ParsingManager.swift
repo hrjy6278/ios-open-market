@@ -10,6 +10,7 @@ import Foundation
 enum ParsingError: LocalizedError {
     case decodingError
     case encodingError
+    
     var errorDescription: String? {
         switch self {
         case .decodingError:
@@ -35,5 +36,22 @@ enum ParsingManager {
            throw ParsingError.decodingError
         }
         return data
+    }
+    
+    static func parseForRequestData<T: Codable>(request: URLRequest,
+                                                type: T.Type,
+                                                completionHandler: @escaping (Result<T, NetWorkError>) -> ()) {
+        URLSessionManager.dataTask(urlRequest: request) { result in
+            switch result {
+            case .success(let data):
+                guard let data = try? parse(data: data, type: type) else {
+                    completionHandler(.failure(.decodeError))
+                    return
+                }
+                completionHandler(.success(data))
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
     }
 }

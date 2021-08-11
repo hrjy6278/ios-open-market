@@ -12,12 +12,13 @@ struct Media {
     let key: String
     let fileName: String
     let data: Data
-    let mimeType = "Image/jpeg"
+    let mimeType: MimeType
     
-    init?(withImage image: UIImage?, forkey key: String) {
+    init?(withImage image: UIImage?, forkey key: String, fileName: String, mimeType: MimeType) {
         self.key = key
-        self.fileName = "\(arc4random()).jpeg"
+        self.fileName = fileName
         guard let data = image?.jpegData(compressionQuality: 0.7) else { return nil }
         self.data = data
+        self.mimeType = mimeType
     }
 }

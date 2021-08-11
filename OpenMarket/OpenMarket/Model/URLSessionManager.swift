@@ -34,7 +34,7 @@ enum NetWorkError: LocalizedError {
     }
 }
 
-enum requestType: CustomStringConvertible {
+enum HTTPMethod: CustomStringConvertible {
     case get
     case post
     case delete
@@ -75,13 +75,8 @@ enum Url: CustomStringConvertible {
 enum URLSessionManager {
     
     static func dataTask(urlRequest: URLRequest,
-                  completionHanler: @escaping (Result<Data, NetWorkError>) -> ()) {
+                         completionHanler: @escaping (Result<Data, NetWorkError>) -> ()) {
         
-//    guard let url = URL(string: String(describing: url)) else {
-//            completionHanler(.failure(.URLError))
-//            return
-//        }
-//
         URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             guard error == nil else {
                 completionHanler(.failure(.invalidURL))
@@ -90,6 +85,7 @@ enum URLSessionManager {
             
             guard let response = response as? HTTPURLResponse,
                   (200...299).contains(response.statusCode) else {
+                print(response)
                 completionHanler(.failure(.failureResponse))
                 return
             }
@@ -102,59 +98,80 @@ enum URLSessionManager {
         }.resume()
     }
     
-    static func generateBoundaryID() -> String {
+    private static func generateBoundaryID() -> String {
         return UUID().uuidString
     }
     
-    static func createBodyData(withParamters parameters: [String : Any],
-                               boundary: String,
-                               images: [Media]?) -> Data {
+    private static func createMultiPartBodyData(withParamters parameters: [String : Any]?,
+                                                boundary: String) -> Data? {
+        
+        guard let parameters = parameters else {
+            return nil
+        }
+        
         let boundaryPrefix = "--\(boundary)\r\n"
         var data = Data()
         
         for (key, value) in parameters {
-            data.append(Data(boundaryPrefix.utf8))
-            data.append(Data("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".utf8))
-            data.append(Data("\(value)\r\n".utf8))
-        }
-        
-        if let images = images {
-            for image in images {
-                data.append(Data(boundaryPrefix.utf8))
-                data.append(Data("Content-Disposition: form-data; name=\"\(image.key)\"; filename=\"\(image.fileName)\"\r\n".utf8))
-                data.append(Data("Content-Type: \(image.mimeType)\r\n\r\n".utf8))
-                data.append(image.data)
-                data.append(Data("\r\n".utf8))
+            if let medias = value as? [Media] {
+                medias.forEach { media in
+                    //data.append(Data(boundaryPrefix.utf8))
+                    data.append(boundaryPrefix)
+                    data.append("Content-Disposition: form-data; name=\"\(media.key)\"; filename=\"\(media.fileName)\"\r\n")
+                    data.append("Content-Type: \(media.mimeType)\r\n\r\n")
+                    data.append(media.data)
+                    data.append("\r\n")
+                }
             }
+            data.append(boundaryPrefix)
+            data.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+            data.append("\(value)\r\n")
         }
-        data.append(Data("--\(boundary)-\r\n".utf8))
+        data.append("--\(boundary)--\r\n")
         return data
     }
     
-    static func createURLRequest(url: URL,
-                                 httpMethod: String,
-                                 parameters: [String : Any]?,
-                                 컨텐츠타입: String,
-                                 medias: [Media]?) -> URLRequest {
+    private static func createJSONBodyData(parameters: [String : Any]?) -> Data? {
+        guard let parameters = parameters else { return nil }
         
+        for (_, value) in parameters {
+            if let password = value as? itemLoginPassword {
+                guard let encodeData = try? ParsingManager.encode(value: password) else {
+                    return nil
+                }
+                return encodeData
+            }
+        }
+        return nil
+    }
+    
+    static func createURLRequest(url: String,
+                                 httpMethod: HTTPMethod,
+                                 parameters: [String : Any]? = nil,
+                                 mimeType: MimeType? = nil) throws -> URLRequest {
         
-        guard let url = URL(string: String(describing: Url.openMarket)) else { return }
-        
+        guard let url = URL(string: url) else {
+            throw NetWorkError.URLError
+        }
         let boundary = UUID().uuidString
         var URLRequset = URLRequest(url: url)
-        URLRequset.httpMethod = httpMethod
+        URLRequset.httpMethod = String(describing: httpMethod)
         
-        
-        URLRequset.setValue("\(컨텐츠타입); boundary=\(boundary)",
-                            forHTTPHeaderField: "Content-Type")
-        //기본일때
-        //153부터 155 스위치 컨텐츠 타입에따라
-        //제이슨 오브젝트는 제이슨 형태의 데이터를 바디에 담아 보내야함.
-        let data = createBodyData(withParamters: parameters,
-                                  boundary: boundary,
-                                  images: medias)
-        
-        URLRequset.httpBody = data
+        if let mimeType = mimeType {
+            switch mimeType {
+            case .applicationJSON:
+                let data = createJSONBodyData(parameters: parameters)
+                URLRequset.httpBody = data
+            case .multipartFormData:
+                let data = createMultiPartBodyData(withParamters: parameters,
+                                                   boundary: boundary)
+                URLRequset.httpBody = data
+            default:
+                break
+            }
+            URLRequset.setValue("\(mimeType); boundary=\(boundary)",
+                                forHTTPHeaderField: "Content-Type")
+        }
         return URLRequset
     }
 }

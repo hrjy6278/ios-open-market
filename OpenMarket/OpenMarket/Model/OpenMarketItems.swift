@@ -36,5 +36,9 @@ struct OpenMarketItems: Codable {
     }
 }
 
+struct itemLoginPassword: Codable {
+    let password: String
+}
+
 
 
