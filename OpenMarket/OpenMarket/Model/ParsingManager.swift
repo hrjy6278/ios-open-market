@@ -9,11 +9,13 @@ import Foundation
 
 enum ParsingError: LocalizedError {
     case decodingError
-    
+    case encodingError
     var errorDescription: String? {
         switch self {
         case .decodingError:
             return "디코딩에 실패하였습니다."
+        case .encodingError:
+            return "인코딩에 실패하였습니다."
         }
     }
 }
@@ -26,5 +28,12 @@ enum ParsingManager {
         } catch {
             throw ParsingError.decodingError
         }
+    }
+    
+    static func encode<T: Codable>(value: T) throws -> Data {
+        guard let data = try? JSONEncoder().encode(value) else {
+           throw ParsingError.decodingError
+        }
+        return data
     }
 }
