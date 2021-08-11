@@ -15,7 +15,7 @@ class PostViewController: UIViewController {
         
     }
 }
-//step : 이미지를 보낼 Media타입 만들기, 해당 타입에는 ContentDisposition에들어갈 정보, 이미지 자체의 데이터를 만드는 과정 등이 포함된다
+//step1 : 이미지를 보낼 Media타입 만들기, 해당 타입에는 ContentDisposition에들어갈 정보, 이미지 자체의 데이터를 만드는 과정 등이 포함된다
 //stpe2 : 바운더리 만들기
 //step3 : http바디 만들기
 //stpe4 : postRequest함수만들기
@@ -65,7 +65,8 @@ extension PostViewController {
         
         let parameters = ["title": "테스트", "descriptions": "테스트제발성공", "price" : 100, "stock": 100, "discounted_price": 10, "password": "12345"] as [String : Any]
         
-        guard let url = URL(string: "https://camp-open-market-2.herokuapp.com/item/555") else { return }
+        //메소드 해당 부분
+        guard let url = URL(string: "https://camp-open-market-2.herokuapp.com/item") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
     

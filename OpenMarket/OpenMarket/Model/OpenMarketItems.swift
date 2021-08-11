@@ -18,6 +18,7 @@ struct OpenMarketItems: Codable {
         let currency: String
         let stock: Int
         let discountedPrice: Int?
+        let descriptions: String?
         let thumbnails: [String]
         let images: [String]?
         let registrationDate: Double
@@ -29,6 +30,7 @@ struct OpenMarketItems: Codable {
             case currency
             case stock
             case discountedPrice = "discounted_price"
+            case descriptions
             case thumbnails
             case images
             case registrationDate = "registration_date"

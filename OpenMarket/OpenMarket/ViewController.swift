@@ -15,15 +15,13 @@ class ViewController: UIViewController {
 }
 
 extension ViewController {
-   
-    
-    
     
     @IBAction func sendRequest(_ sender: Any) {
         let url = URL(string: "https://camp-open-market-2.herokuapp.com//items/1")!
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
+        var data = Data()
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
                 print("에러")
