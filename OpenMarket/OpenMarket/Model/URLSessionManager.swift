@@ -66,7 +66,7 @@ enum Url: CustomStringConvertible {
         case .openMarket:
             return "https://camp-open-market-2.herokuapp.com/items/"
         case .openMarketItem:
-            return "https://camp-open-market-2.herokuapp.com/item/"
+            return "https://camp-open-market-2.herokuapp.com/item"
         }
     }
 }
@@ -121,6 +121,7 @@ enum URLSessionManager {
                     data.append(media.data)
                     data.append(lineBreak)
                 }
+                continue
             }
             data.append("--\(boundary + lineBreak)")
             data.append("Content-Disposition: form-data; name=\"\(key)\"\(lineBreak + lineBreak)")
@@ -189,7 +190,6 @@ enum URLSessionManager {
         let boundary = UUID().uuidString
         var URLRequset = URLRequest(url: url)
         URLRequset.httpMethod = String(describing: httpMethod)
-        
         if let mimeType = mimeType {
             switch mimeType {
             case .applicationJSON:

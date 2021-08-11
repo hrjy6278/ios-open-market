@@ -55,10 +55,18 @@ extension ViewController {
             "price" : 100,
             "currency" : "KRW",
             "stock" : 0,
-            "images" : [Media(withImage: .remove, forkey: "remove", fileName: "remove", mimeType: .multipartFormData)],
+            "images" : [Media(withImage: .remove,
+                              forkey: "remove",
+                              fileName: "remove",
+                              mimeType: .multipartFormData)],
             "password" : "1"
         ] as [String : Any]
-        guard let request = try? URLSessionManager.createURLRequest(url: url, httpMethod: .post, parameters: dummyParameters, mimeType: .multipartFormData) else {
+        
+        guard let request = try? URLSessionManager.createURLRequest(url: url,
+                                                                    httpMethod: .post,
+                                                                    parameters: dummyParameters,
+                                                                    mimeType:
+                                                                    .multipartFormData) else {
             return
         }
         URLSessionManager.dataTask(urlRequest: request) { result in
