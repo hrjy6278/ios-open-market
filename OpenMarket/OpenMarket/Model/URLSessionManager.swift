@@ -109,26 +109,59 @@ enum URLSessionManager {
             return nil
         }
         
-        let boundaryPrefix = "--\(boundary)\r\n"
+        let lineBreak = "\r\n" // 개행
         var data = Data()
         
         for (key, value) in parameters {
             if let medias = value as? [Media] {
                 medias.forEach { media in
-                    //data.append(Data(boundaryPrefix.utf8))
-                    data.append(boundaryPrefix)
-                    data.append("Content-Disposition: form-data; name=\"\(media.key)\"; filename=\"\(media.fileName)\"\r\n")
-                    data.append("Content-Type: \(media.mimeType)\r\n\r\n")
+                    data.append("--\(boundary + lineBreak)")
+                    data.append("Content-Disposition: form-data; name=\"\(media.key)\"; filename=\"\(media.fileName)\"\(lineBreak)")
+                    data.append("Content-Type: \(media.mimeType)\(lineBreak + lineBreak)")
                     data.append(media.data)
-                    data.append("\r\n")
+                    data.append(lineBreak)
                 }
             }
-            data.append(boundaryPrefix)
-            data.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
-            data.append("\(value)\r\n")
+            data.append("--\(boundary + lineBreak)")
+            data.append("Content-Disposition: form-data; name=\"\(key)\"\(lineBreak + lineBreak)")
+            data.append("\(value)\(lineBreak)")
+            
+//            data.append(boundaryPrefix)
+//            data.append("Content-Disposition: form-data; name=\"\(media.key)\"; filename=\"\(media.fileName)\"\r\n")
+//            data.append("Content-Type: \(media.mimeType)\r\n\r\n")
+//            data.append(media.data)
+//            data.append("\r\n")
+//
+//            data.append(boundaryPrefix)
+//            data.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+//            data.append("\(value)\r\n")
         }
-        data.append("--\(boundary)--\r\n")
+        data.append("--\(boundary)--\(lineBreak)")
         return data
+        
+//        let lineBreak = "\r\n" // 개행
+//        var body = Data() // 데이터 담을 곳
+//
+//        // key-value의 사전형태로 post할 정보가 파라미터로 들어감
+//        if let parameters = para {
+//            for (key, value) in parameters {
+//                body.append("--\(boundary + lineBreak)")
+//                body.append("Content-Disposition: form-data; name=\"\(key)\"\(lineBreak + lineBreak)")
+//                body.append("\(value)\(lineBreak)")
+//            }
+//        }
+//        // 이미지의 경우 따로 처리해준다.
+//        for photo in image {
+//            body.append("--\(boundary + lineBreak)")
+//            body.append("Content-Disposition: form-data; name=\"\(photo?.key)\"; filename=\"\(photo?.filename)\"\(lineBreak)")
+//            body.append("Content-Type: \(photo?.mimeType ?? "에러" +  lineBreak + lineBreak)")
+//            body.append(photo?.data ?? Data())
+//            body.append(lineBreak)
+//        }
+//
+//
+//        //body끝나는 부분은 -- 를 말미에 추가해준다.
+//        body.append("--\(boundary)--\(lineBreak)")
     }
     
     private static func createJSONBodyData(parameters: [String : Any]?) -> Data? {
