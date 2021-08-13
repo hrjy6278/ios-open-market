@@ -92,10 +92,10 @@ struct NetworkManager {
 }
 
 // string을 utf8 로바꿔서 추가해주는 메소드
-extension Data {
-    mutating func append(_ string: String) {
-        if let data = string.data(using: .utf8) {
-            append(data)
-        }
-    }
-}
+//extension Data {
+//    mutating func append(_ string: String) {
+//        if let data = string.data(using: .utf8) {
+//            append(data)
+//        }
+//    }
+//}
