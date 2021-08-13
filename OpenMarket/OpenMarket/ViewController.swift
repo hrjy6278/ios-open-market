@@ -31,7 +31,7 @@ extension ViewController {
                 print("노리스펀스")
                 return
             }
-            
+            print(response)
 
             guard let data = data else {
                 print("노데이터")

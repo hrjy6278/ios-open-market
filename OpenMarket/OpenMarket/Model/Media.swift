@@ -28,7 +28,8 @@ struct Media {
         self.key = key
         self.mimeType = mimeType
         self.filename = filename
-        guard let data = image.jpegData(compressionQuality: 0.7) else { return nil }
+        guard let data = image.jpegData(compressionQuality: 0.7) else  { return nil }
+//        jpegData(compressionQuality: 0.0) else { return nil }
         // 사진을 Data타입으로 바꿈
         self.data = data
     }

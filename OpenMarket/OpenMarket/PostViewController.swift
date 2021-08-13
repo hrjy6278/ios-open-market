@@ -24,12 +24,12 @@ class PostViewController: UIViewController {
 extension PostViewController {
     //MARK:- Step2
     func generateBoundary() -> String {
-        let randomBoundaryString = UUID.init()
+        let randomBoundaryString = UUID().uuidString
         return "Boundary-\(randomBoundaryString)"
     }
     
     //MARK:- Step3
-    func createHTTPBody(withParameters para: [String:Any]?, image: [Media?], boundary: String) -> Data {
+    func createHTTPBody(withParameters para: [String: Any]?, image: [Media]?, boundary: String) -> Data {
         
         let lineBreak = "\r\n" // 개행
         var body = Data() // 데이터 담을 곳
@@ -43,27 +43,29 @@ extension PostViewController {
             }
         }
         // 이미지의 경우 따로 처리해준다.
+        if let image = image {
         for photo in image {
             body.append("--\(boundary + lineBreak)")
-            body.append("Content-Disposition: form-data; name=\"\(photo?.key)\"; filename=\"\(photo?.filename)\"\(lineBreak)")
-            body.append("Content-Type: \(photo?.mimeType ?? "에러" +  lineBreak + lineBreak)")
-            body.append(photo?.data ?? Data())
+            body.append("Content-Disposition: form-data; name=\"\(photo.key)\"; filename=\"\(photo.filename)\"\(lineBreak)")
+            body.append("Content-Type: \(photo.mimeType +  lineBreak + lineBreak)")
+            body.append(photo.data)
             body.append(lineBreak)
         }
-        
-        
+        }
         //body끝나는 부분은 -- 를 말미에 추가해준다.
         body.append("--\(boundary)--\(lineBreak)")
-        
+//        print(body)
         return body
     }
     
     @IBAction func sendPost(_ sender: Any) {
         //MARK:-Step4
-        guard let testImages = UIImage(named: "testImage") else { return }
-        let imagesArray = [Media(withImage: testImages, forkey: "testImage", mimeType: "image/jpeg", filename: "testImage.jpg")]
+//        guard let testImages = UIImage(named: "2") else { return }
+//        let imagesArray = [Media(withImage: testImages, forkey: "testImage", mimeType: "image/jpeg", filename: "phototestImage.jpeg")]
         
-        let parameters = ["title": "테스트", "descriptions": "테스트제발성공", "price" : 100, "stock": 100, "discounted_price": 10, "password": "12345"] as [String : Any]
+        let img = #imageLiteral(resourceName: "cat")
+        guard let testImage = Media(withImage: img, forkey: "images[]", mimeType: "image/jpg", filename: "asdf.jpg") else { return }
+        let parameters: [String: Any] = ["title": "테스트", "descriptions": "테스트제발성공", "price" : 100, "stock": 100, "discounted_price": 10, "currency": "Euro", "password": "12345"]
         
         //메소드 해당 부분
         guard let url = URL(string: "https://camp-open-market-2.herokuapp.com/item") else { return }
@@ -73,18 +75,29 @@ extension PostViewController {
         let boundary = generateBoundary()
         
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        let dataBody = createHTTPBody(withParameters: parameters, image: imagesArray, boundary: boundary)
+//        request.addValue("", forHTTPHeaderField: "Content-Encoding")
+        
+        
+        let dataBody = createHTTPBody(withParameters: parameters, image: [testImage], boundary: boundary)
+        print(dataBody)
+        print(String(data: dataBody, encoding: .utf8))
         request.httpBody = dataBody
         
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, error) in
-            if let response = response {
+            if error != nil {
+                print(error)
+            }
+            
+            if let response = response as? HTTPURLResponse {
                 print(response)
+//                print(response.self)
             }
             
             if let data = data {
                 do {
-                    let json = try ParsingManager.parse(data: data, type: OpenMarketItems.Item.self)
+//                    let json = try ParsingManager.parse(data: data, type: OpenMarketItems.Item.self)
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
                     print(json)
                 } catch {
                     print(error)
