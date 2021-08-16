@@ -25,7 +25,7 @@ struct NetworkManager {
         return "Content-Disposition: form-data; "
     }
     
-    private func createHTTPBody(with parameters: userInput?, media: [Media]?) -> Data? {
+    func createHTTPBody(with parameters: userInput?, media: [Media]?) -> Data? {
         let boundary = generateBoundary()
         let lineBreak = "\r\n"
         var body = Data()
