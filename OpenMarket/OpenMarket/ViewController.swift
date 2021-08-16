@@ -16,9 +16,9 @@ class ViewController: UIViewController {
     @IBAction func postButton(_ sender: Any) {
         let session = URLSession.shared
         let test = NetworkManager(session: session)
-        let url = URL(string: "https://camp-open-market-2.herokuapp.com/item")!
-        let img = UIImage(named: "cat")
-        let imgMedia = Media(image: img!, key: .images, mimeType: .jpeg, fileName: "cat")
+        guard let url = URL(string: "https://camp-open-market-2.herokuapp.com/item") else { return }
+        guard let img = UIImage(named: "cat") else { return }
+        guard let imgMedia = Media(image: img, key: .images, mimeType: .jpeg, fileName: "cat") else { return }
         
 //                guard let testImages = UIImage(named: "2") else { return }
 //        //        let imagesArray = [Media(withImage: testImages, forkey: "testImage", mimeType: "image/jpeg", filename: "phototestImage.jpeg")]
@@ -28,8 +28,8 @@ class ViewController: UIViewController {
             let parameters: [String: Any] = ["title": "테스트", "descriptions": "테스트제발성공", "price" : 100, "stock": 100, "discounted_price": 10, "currency": "Euro", "password": "12345"]
         
         
-        let body = test.createHTTPBody(with: parameters, media: [])
-        test.request(httpMethod: HTTPMethod.post, url: url, body: body) { result in
+        let body = test.createHTTPBody(with: parameters, media: [imgMedia])
+        test.request(httpMethod: .post, url: url, body: body) { result in
             print(result)
         }
     }

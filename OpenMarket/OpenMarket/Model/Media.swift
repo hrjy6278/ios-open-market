@@ -13,7 +13,7 @@ struct Media {
     let data: Data
     let mimeType: MimeType
     
-    init?(image: UIImage, key: APIKey, mimeType: MimeType, fileName: String, compressionQuality: CGFloat = 0.3) {
+    init?(image: UIImage, key: APIKey, mimeType: MimeType, fileName: String, compressionQuality: CGFloat = 0.7) {
         self.key = key
         self.mimeType = mimeType
         

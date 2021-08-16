@@ -25,7 +25,7 @@ struct NetworkManager {
         return "Content-Disposition: form-data; "
     }
     
-    func createHTTPBody(with parameters: userInput?, media: [Media]?) -> Data? {
+    func createHTTPBody(with parameters: userInput?, media: [Media]?) -> Data {
         let boundary = generateBoundary()
         let lineBreak = "\r\n"
         var body = Data()
@@ -33,36 +33,39 @@ struct NetworkManager {
         if let parameters = parameters {
             for (key, value) in parameters {
                 body.append(boundary + lineBreak)
-                body.append("\(makeContentDispositionLine())name=\"\(key)\"\(lineBreak)")
-                body.append("\(value) + \(lineBreak)")
+                body.append("\(makeContentDispositionLine())name=\"\(key)\"\(lineBreak + lineBreak)")
+                body.append("\(value)\(lineBreak)")
             }
         }
         
         if let media = media {
             for image in media {
                 body.append(boundary + lineBreak)
-                body.append("\(makeContentDispositionLine())name=\"\(image.key)\"; filename=\"\(image.fileName)\"\(lineBreak)")
-                body.append("Content-Type: \(image.mimeType)")
+                body.append("\(makeContentDispositionLine())name=\"\(image.key.description)\"; filename=\"\(image.fileName)\"\(lineBreak)")
+                body.append("Content-Type: \(image.mimeType.description + lineBreak + lineBreak)") 
                 body.append(image.data)
                 body.append(lineBreak)
             }
         }
         
-        body.append("--\(boundary)--\(lineBreak)")
+        body.append("\(boundary)--\(lineBreak)")
         
+//        print(String(data: body, encoding: .utf8)!)
         return body
     }
-
-    private func createRequest(httpMethod: HTTPMethod, url: URL, body: Data?) -> URLRequest {
+    
+    private func createRequest(httpMethod: HTTPMethod, url: URL, body: Data) -> URLRequest {
         var request = URLRequest(url: url)
-        request.httpMethod = String(describing: httpMethod)
+        request.httpMethod = httpMethod.description
         request.httpBody = body
         
         return request
     }
     
-    func request(httpMethod: HTTPMethod, url: URL, body: Data?, completionHandler: @escaping (Result<Data, NetworkError>) -> ()) {
-        let request = createRequest(httpMethod: httpMethod, url: url, body: body)
+    func request(httpMethod: HTTPMethod, url: URL, body: Data, completionHandler: @escaping (Result<Data, NetworkError>) -> ()) {
+        var request = createRequest(httpMethod: httpMethod, url: url, body: body)
+        
+        request.setValue("multipart/form-data; boundary=\(generateBoundary())", forHTTPHeaderField: "Content-Type")
         
         session.dataTask(with: request) { (data, response, error) in
             guard error == nil else {
@@ -72,6 +75,7 @@ struct NetworkManager {
             
             guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
                 completionHandler(.failure(.responseError))
+                print(response)
                 return
             }
             
@@ -114,9 +118,7 @@ struct NetworkManager {
 //
 //@IBAction func sendPost(_ sender: Any) {
 //    //MARK:-Step4
-////        guard let testImages = UIImage(named: "2") else { return }
-////        let imagesArray = [Media(withImage: testImages, forkey: "testImage", mimeType: "image/jpeg", filename: "phototestImage.jpeg")]
-//
+
 //    let img = #imageLiteral(resourceName: "cat")
 //    guard let testImage = Media(withImage: img, forkey: "images[]", mimeType: "image/jpg", filename: "asdf.jpg") else { return }
 //    let parameters: [String: Any] = ["title": "테스트", "descriptions": "테스트제발성공", "price" : 100, "stock": 100, "discounted_price": 10, "currency": "Euro", "password": "12345"]
