@@ -21,7 +21,7 @@
                                 <rect key="frame" x="191.5" y="433" width="31" height="30"/>
                                 <state key="normal" title="Post"/>
                                 <connections>
-                                    <action selector="post:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4Gl-uH-T3V"/>
+                                    <action selector="postButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4Gl-uH-T3V"/>
                                 </connections>
                             </button>
                         </subviews>
