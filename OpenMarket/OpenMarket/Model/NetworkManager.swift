@@ -15,24 +15,25 @@ enum NetworkError: Error {
 
 struct NetworkManager {
     let session: URLSession
+//    let url: URLSession
     typealias userInput = [String: Any]
     
-    private func generateBoundary() -> String {
-        return "--Boundary\(UUID().uuidString)"
+    func generateBoundary() -> String {
+        return "Boundary\(UUID().uuidString)"
     }
     
     private func makeContentDispositionLine() -> String {
         return "Content-Disposition: form-data; "
     }
     
-    func createHTTPBody(with parameters: userInput?, media: [Media]?) -> Data {
-        let boundary = generateBoundary()
+    func createHTTPBody(_ boundary: String, with parameters: userInput?, media: [Media]?) -> Data {
+        let boundary = boundary
         let lineBreak = "\r\n"
         var body = Data()
         
         if let parameters = parameters {
             for (key, value) in parameters {
-                body.append(boundary + lineBreak)
+                body.append("--\(boundary + lineBreak)")
                 body.append("\(makeContentDispositionLine())name=\"\(key)\"\(lineBreak + lineBreak)")
                 body.append("\(value)\(lineBreak)")
             }
@@ -40,7 +41,7 @@ struct NetworkManager {
         
         if let media = media {
             for image in media {
-                body.append(boundary + lineBreak)
+                body.append("--\(boundary + lineBreak)")
                 body.append("\(makeContentDispositionLine())name=\"\(image.key.description)\"; filename=\"\(image.fileName)\"\(lineBreak)")
                 body.append("Content-Type: \(image.mimeType.description + lineBreak + lineBreak)") 
                 body.append(image.data)
@@ -48,9 +49,8 @@ struct NetworkManager {
             }
         }
         
-        body.append("\(boundary)--\(lineBreak)")
+        body.append("--\(boundary)--\(lineBreak)")
         
-//        print(String(data: body, encoding: .utf8)!)
         return body
     }
     
@@ -58,14 +58,22 @@ struct NetworkManager {
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.description
         request.httpBody = body
-        
+        print("createRequest의 바디\(dump(body))")
         return request
     }
     
-    func request(httpMethod: HTTPMethod, url: URL, body: Data, completionHandler: @escaping (Result<Data, NetworkError>) -> ()) {
+//    private func makeUrl(path: String) -> Result<URL, NetworkError> {
+//        guard let url = URL(string: "https://camp-open-market-2.herokuapp.com/item/\(path)") else { return .failure(NetworkError.urlInvalid) }
+//        return .success(url)
+//    }
+    
+    func request(_ boundary: String, httpMethod: HTTPMethod, url: URL, body: Data, completionHandler: @escaping (Result<Data, NetworkError>) -> ()) {
         var request = createRequest(httpMethod: httpMethod, url: url, body: body)
         
-        request.setValue("multipart/form-data; boundary=\(generateBoundary())", forHTTPHeaderField: "Content-Type")
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        dump(request.allHTTPHeaderFields)
+        dump(String(data: body, encoding: .utf8))
         
         session.dataTask(with: request) { (data, response, error) in
             guard error == nil else {

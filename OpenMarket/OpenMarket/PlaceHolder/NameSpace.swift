@@ -16,7 +16,7 @@ enum MimeType: CustomStringConvertible {
         case .jpeg:
             return "image/jpeg"
         case .png:
-            return "imgae/png"
+            return "image/png"
         }
     }
 }
