@@ -29,7 +29,7 @@ struct NetworkManager {
         return "Content-Disposition: \(contentType); "
     }
     
-    private func createRequest(httpMethod: HTTPMethod, url: URL, body: Data?, _ contentType: ContentType) -> URLRequest {
+    private func createRequest(httpMethod: HTTPMethod, url: URL, body: Data?, _ contentType: ContentType?) -> URLRequest {
         var request = URLRequest(url: url)
         request.setValue("\(contentType); boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.httpMethod = String(describing: httpMethod)
@@ -80,7 +80,7 @@ struct NetworkManager {
         return body
     }
 
-    func request(httpMethod: HTTPMethod, url: URL, body: Data?, _ contentType: ContentType, _ completionHandler: @escaping (Result<Data, NetworkError>) -> ()) {
+    func request(httpMethod: HTTPMethod, url: URL, body: Data?, _ contentType: ContentType?, _ completionHandler: @escaping (Result<Data, NetworkError>) -> ()) {
         let request = createRequest(httpMethod: httpMethod, url: url, body: body, contentType)
         
         session.dataTask(with: request) { (data, response, error) in
