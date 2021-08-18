@@ -6,6 +6,8 @@
 
 import UIKit
 
+var openMarketItemList = [OpenMarketItems]()
+
 class MainViewController: UIViewController {
     private var toggle: Bool = false
     @IBOutlet weak var collectionView: UICollectionView!
@@ -22,33 +24,40 @@ class MainViewController: UIViewController {
         
         if #available(iOS 14.0, *) {
             if toggle == false {
-            let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-            let layout = UICollectionViewCompositionalLayout.list(using: configuration)
-            collectionView.collectionViewLayout = layout
-            toggle = true
+                let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+                let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+                collectionView.collectionViewLayout = layout
+//                collectionView.translatesAutoresizingMaskIntoConstraints = true
+//                let registeration = UICollectionView.CellRegistration<UICollectionViewListCell, OpenMarketItems> {
+//                    cell, indexpath, item in
+//                    var content = cell.defaultContentConfiguration()
+//                    content.text = "gkgk"
+//                    cell.contentConfiguration = content
+//                }
+//
+//                UICollectionViewDiffableDataSource<Section, OpenMarketItems>(collectionView: self.collectionView) { collectionView, indexPath, user in
+//
+//                    collectionView.dequeuecon
+//
+//                }
+                
+                toggle = true
             } else {
                 toggle = false
                 collectionView.collectionViewLayout = Layout.setupCollectionViewLayOut(view, collectionView, true)
-
             }
         } else {
             // Fallback on earlier versions
         }
-        
     }
     
-    //    var openMarketItemList: OpenMarketItems?
-    var openMarketItemList = [OpenMarketItems]()
-    
-
     private func insertPageData(_ pageNum: ClosedRange<Int>) {
         
         for i in pageNum {
             test(i) {
                 data in
                 DispatchQueue.main.async {
-                    //                self.openMarketItemList = data
-                    self.openMarketItemList.append(data)
+                    openMarketItemList.append(data)
                     self.collectionView.reloadData()
                     // discard the dataSource and delegate data and requery as necessary
                 }
@@ -58,11 +67,9 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         collectionView.dataSource = self
         insertPageData(1...2)
         Layout.setupCollectionViewLayOut(view, collectionView, false)
-
     }
 }
 
@@ -92,7 +99,7 @@ extension MainViewController: UICollectionViewDataSource {
             case .success(let data):
                 guard let image = UIImage(data: data) else { return }
                 DispatchQueue.main.async {
-                    cell.update(self.openMarketItemList[indexPath.section].items[indexPath.item])
+                    cell.update(openMarketItemList[indexPath.section].items[indexPath.item])
                     cell.updateImage(image)
                 }
             case .failure(let error):
