@@ -16,16 +16,33 @@ class OpenMarketCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var stockNumberLabel: UILabel!
     let label = UILabel()
+    
     func configure(thumbnail: UIImage?, nameLabel: String, discountedPrice: Int?, price: Int, stockNumber: Int, currency: String) {
         
         setupStockLabel(stockNumber)
-        let price = convertToString.convert(of: price)
-        
-        
+        setupPriceLabel(price, discountedPrice, currency: currency)
+       
         self.nameLabel.text = nameLabel
         self.thumnailImage.image = thumbnail
+       
+    }
+    
+    private func setupStockLabel(_ stockNumber: Int) {
+        if stockNumber == 0 {
+            self.stockNumberLabel.text = "품절"
+            self.stockNumberLabel.textColor = .systemOrange
+        } else {
+            let stock = convertToString.convert(of: stockNumber)
+            self.stockNumberLabel.text = "잔여수량 : \(stock)"
+        }
+    }
+    
+    private func setupPriceLabel(_ price: Int,
+                                 _ discountedPrice: Int?,
+                                 currency: String) {
         if discountedPrice == nil {
-            self.priceLabel.text = "\(currency) \(price)"
+            let priceText = convertToString.convert(of: price)
+            self.priceLabel.text = "\(currency) \(priceText)"
         } else {
             let discountedText = convertToString.convert(of: discountedPrice)
             let attributeString = NSMutableAttributedString(string: "\(currency) \(discountedText)")
@@ -37,17 +54,6 @@ class OpenMarketCollectionViewCell: UICollectionViewCell {
             label.text = "\(currency) \(discountedText)"
             label.textAlignment = .center
             stackView.addArrangedSubview(label)
-        }
-        
-    }
-    
-    private func setupStockLabel(_ stockNumber: Int) {
-        if stockNumber == 0 {
-            self.stockNumberLabel.text = "품절"
-            self.stockNumberLabel.textColor = .systemOrange
-        } else {
-            let stock = convertToString.convert(of: stockNumber)
-            self.stockNumberLabel.text = "잔여수량 : \(stock)"
         }
     }
     
