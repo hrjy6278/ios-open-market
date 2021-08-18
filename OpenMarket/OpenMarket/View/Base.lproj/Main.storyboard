@@ -23,13 +23,13 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ate-Qu-eXI">
                                     <size key="itemSize" width="155" height="225"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="headerReferenceSize" width="50" height="50"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="kcQ-oU-I7K" customClass="OpenMarketCollectionViewCell" customModule="OpenMarket" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="155" height="225"/>
+                                        <rect key="frame" x="0.0" y="50" width="155" height="225"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="SJr-rf-0vj">
                                             <rect key="frame" x="0.0" y="0.0" width="155" height="225"/>
@@ -90,6 +90,20 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ai2-yZ-xwW">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Koz-hg-zgo">
+                                            <rect key="frame" x="142" y="8" width="131" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <segments>
+                                                <segment title="First"/>
+                                                <segment title="Second"/>
+                                            </segments>
+                                        </segmentedControl>
+                                    </subviews>
+                                </collectionReusableView>
                             </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -101,7 +115,9 @@
                             <constraint firstItem="ITw-Ot-tKZ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="NiJ-S3-q8u"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="YSq-yD-PUp"/>
+                    <navigationItem key="navigationItem" id="YSq-yD-PUp">
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="GCh-uf-pQX"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="ITw-Ot-tKZ" id="QEh-Fj-AuF"/>
                     </connections>

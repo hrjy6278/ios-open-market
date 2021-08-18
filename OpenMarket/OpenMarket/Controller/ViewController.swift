@@ -8,9 +8,11 @@ import UIKit
 
 class ViewController: UIViewController {
     var openMarketItems = [OpenMarketItems.Item]()
+    var images = [UIImage]()
     let netWorkManager = NetworkManager(session: .shared)
     let imageCache = ImageCache()
     var marketPage = 1
+    let activityView = UIActivityIndicatorView()
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,16 +21,13 @@ class ViewController: UIViewController {
         setupCollectionViewLayOut()
         getOpenMarketList(page: marketPage)
         navigationItem.title = "야아 마켓"
+        setupIndicatorView()
     }
-    
     
 }
 
 extension ViewController: UICollectionViewDataSource {
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
-    }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return openMarketItems.count
     }
@@ -37,19 +36,38 @@ extension ViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? OpenMarketCollectionViewCell else {
             fatalError()
         }
+        cell.layer.borderWidth = 2.0
+        cell.layer.borderColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+        cell.layer.cornerRadius = 5.0
         let item = openMarketItems[indexPath.item]
-        
-        let url = item.thumbnails.first!
+        let url = item.thumbnails.first
         var thumbnail: UIImage?
+
         getImage(for: url, id: item.id) { image in
             thumbnail = image
             DispatchQueue.main.async {
-                
-                cell.configure(thumbnail: thumbnail, nameLabel: item.title, discountedPrice: item.discountedPrice, price: item.price, stockNumber: item.stock, currency: item.currency)
+                cell.configure(thumbnail: thumbnail,
+                               nameLabel: item.title,
+                               discountedPrice: item.discountedPrice,
+                               price: item.price,
+                               stockNumber: item.stock,
+                               currency: item.currency)
+                self.activityView.stopAnimating()
             }
+            
         }
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        let hearderView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "openMarketHeader", for: indexPath) as! OpenMarketHeaderCollectionView
+        let view = UISegmentedControl()
+        hearderView.addSubview(view)
+        
+        return hearderView
+    }
+    
 }
 
 extension ViewController {
@@ -68,6 +86,7 @@ extension ViewController {
     
     func getOpenMarketList(page: Int) {
         guard let url = URL(string: String(describing: OpenMarketUrl.listLookUp) + String(page)) else { return }
+        
         netWorkManager.request(httpMethod: .get,
                                url: url,
                                body: nil,
@@ -88,16 +107,17 @@ extension ViewController {
         }
     }
     
-    func getImage(for url: String,
+    func getImage(for url: String?,
                   id: Int,
                   completion: @escaping (UIImage) -> ()) {
+        guard let urlText = url else { return }
         
         if let image = imageCache.image(forkey: id) {
             completion(image)
             return
         }
         
-        guard let url = URL(string: url) else { return }
+        guard let url = URL(string: urlText) else { return }
         netWorkManager.request(httpMethod: .get, url: url, body: nil, .json) { result in
             switch result {
             case .success(let data):
@@ -111,15 +131,26 @@ extension ViewController {
     }
 }
 
+extension ViewController {
+    func setupIndicatorView() {
+        activityView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        activityView.center = view.center
+        activityView.style = .large
+        activityView.color = .black
+        activityView.startAnimating()
+        view.addSubview(activityView)
+    }
+}
+
 //페이지를 더 불러오는 부분
 extension ViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         print(indexPath.section)
-//        if indexPath.row == collectionView.numberOfItems(inSection: indexPath.section) - 1 {
-//            marketPage += 1
-//            getOpenMarketList(page: marketPage)
-//            collectionView.reloadData()
-//            //DispatchQueue.main.async(execute: collectionView.reloadData)
-//        }
+        //        if indexPath.row == collectionView.numberOfItems(inSection: indexPath.section) - 1 {
+        //            marketPage += 1
+        //            getOpenMarketList(page: marketPage)
+        //            collectionView.reloadData()
+        //            //DispatchQueue.main.async(execute: collectionView.reloadData)
+        //        }
     }
 }

@@ -18,13 +18,12 @@ class OpenMarketCollectionViewCell: UICollectionViewCell {
     let label = UILabel()
     
     func configure(thumbnail: UIImage?, nameLabel: String, discountedPrice: Int?, price: Int, stockNumber: Int, currency: String) {
+        self.nameLabel.text = nameLabel
+        self.thumnailImage.image = thumbnail
         
         setupStockLabel(stockNumber)
         setupPriceLabel(price, discountedPrice, currency: currency)
-       
-        self.nameLabel.text = nameLabel
-        self.thumnailImage.image = thumbnail
-       
+        
     }
     
     private func setupStockLabel(_ stockNumber: Int) {
@@ -53,6 +52,7 @@ class OpenMarketCollectionViewCell: UICollectionViewCell {
             
             label.text = "\(currency) \(discountedText)"
             label.textAlignment = .center
+            
             stackView.addArrangedSubview(label)
         }
     }
