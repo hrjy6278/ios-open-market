@@ -10,7 +10,6 @@ import Foundation
 struct OpenMarketItems: Codable {
     let page: Int
     let items: [Item]
-    
     struct Item: Codable {
         let id: Int
         let title: String
@@ -32,6 +31,7 @@ struct OpenMarketItems: Codable {
             case registrationDate = "registration_date"
         }
     }
+
 }
 
 

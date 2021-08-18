@@ -67,28 +67,29 @@ struct NetworkManager {
 //        return .success(url)
 //    }
     
-    func request(_ boundary: String, httpMethod: HTTPMethod, url: URL, body: Data, completionHandler: @escaping (Result<Data, NetworkError>) -> ()) {
+    func request(_ boundary: String, httpMethod: HTTPMethod, url: URL, body: Data, completionHandler: @escaping (Data) -> ()) {
         var request = createRequest(httpMethod: httpMethod, url: url, body: body)
         
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
-        dump(request.allHTTPHeaderFields)
-        dump(String(data: body, encoding: .utf8))
-        
+//
+//        dump(request.allHTTPHeaderFields)
+//        dump(String(data: body, encoding: .utf8))
+//
         session.dataTask(with: request) { (data, response, error) in
             guard error == nil else {
-                completionHandler(.failure(.requestError))
+                completionHandler(Data())
+//                completionHandler(.failure(.requestError))
                 return
             }
             
             guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-                completionHandler(.failure(.responseError))
+                completionHandler(Data())
                 print(response)
                 return
             }
             
             if let data = data {
-                completionHandler(.success(data))
+                completionHandler(data)
             }
         }.resume()
     }
