@@ -36,4 +36,12 @@ struct OpenMarketItems: Codable {
 }
 
 
-
+enum convertToString {
+    static func convert(of int: Int?) -> String {
+        guard let number = int else { return "" }
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        guard let convertText = formatter.string(from: NSNumber(value: number)) else { return "" }
+        return convertText
+    }
+}
