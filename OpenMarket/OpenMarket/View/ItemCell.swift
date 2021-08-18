@@ -30,6 +30,9 @@ class ItemCell: UICollectionViewCell {
         priceText?.text = "\(item.currency)\(item.price)"
         titleText?.text = item.title
         statusText?.text = "잔여수량: \(item.stock)"
+        statusText?.textColor = .systemGray
+        priceText.textColor = .systemGray
+        statusText.textColor = .systemGray
         discountedPrice?.isHidden = true
         
         if item.stock == 0 {
