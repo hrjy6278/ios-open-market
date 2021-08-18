@@ -36,8 +36,6 @@ class OpenMarketCollectionViewCell: UICollectionViewCell {
             
             label.text = "\(currency) \(discountedText)"
             label.textAlignment = .center
-            stackView.distribution = .equalSpacing
-            stackView.spacing = 2
             stackView.addArrangedSubview(label)
         }
         
