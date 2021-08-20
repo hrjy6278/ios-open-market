@@ -29,7 +29,7 @@ struct NetworkManager {
         return "Content-Disposition: \(contentType); "
     }
     
-    private func createRequest(httpMethod: HTTPMethod, url: URL, body: Data?, _ contentType: ContentType?) -> URLRequest {
+    func createRequest(httpMethod: HTTPMethod, url: URL, body: Data?, _ contentType: ContentType?) -> URLRequest {
         var request = URLRequest(url: url)
         request.setValue("\(contentType); boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.httpMethod = String(describing: httpMethod)

@@ -27,32 +27,15 @@ class MainViewController: UIViewController {
                 let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
                 let layout = UICollectionViewCompositionalLayout.list(using: configuration)
                 collectionView.collectionViewLayout = layout
-//                collectionView.translatesAutoresizingMaskIntoConstraints = true
-//                let registeration = UICollectionView.CellRegistration<UICollectionViewListCell, OpenMarketItems> {
-//                    cell, indexpath, item in
-//                    var content = cell.defaultContentConfiguration()
-//                    content.text = "gkgk"
-//                    cell.contentConfiguration = content
-//                }
-//
-//                UICollectionViewDiffableDataSource<Section, OpenMarketItems>(collectionView: self.collectionView) { collectionView, indexPath, user in
-//
-//                    collectionView.dequeuecon
-//
-//                }
-                
                 toggle = true
             } else {
                 toggle = false
-                collectionView.collectionViewLayout = Layout.setupCollectionViewLayOut(view, collectionView, true)
+                collectionView.collectionViewLayout = Layout.setupCollectionViewLayOut(view, collectionView, false)
             }
-        } else {
-            // Fallback on earlier versions
         }
     }
     
     private func insertPageData(_ pageNum: ClosedRange<Int>) {
-        
         for i in pageNum {
             test(i) {
                 data in
@@ -71,6 +54,8 @@ class MainViewController: UIViewController {
         insertPageData(1...2)
         Layout.setupCollectionViewLayOut(view, collectionView, false)
     }
+
+    
 }
 
 extension MainViewController: UICollectionViewDataSource {

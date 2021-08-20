@@ -7,7 +7,6 @@
 
 import UIKit
 struct Layout {
-    
     static func setupCollectionViewLayOut(_ view: UIView, _ collectionView: UICollectionView, _ changeScrollDirection: Bool) -> UICollectionViewFlowLayout{
         let flowLayout = UICollectionViewFlowLayout()
         
@@ -26,4 +25,14 @@ struct Layout {
     
         return flowLayout
     }
+    
+    static func compoLayout() -> UICollectionViewCompositionalLayout {
+        
+        let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1)))
+        item.contentInsets = .init(top: 0, leading: 5, bottom: 16, trailing: 5)
+        
+        
+    }
 }
+
+
