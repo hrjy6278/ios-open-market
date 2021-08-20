@@ -26,13 +26,39 @@ struct Layout {
         return flowLayout
     }
     
-    static func compoLayout() -> UICollectionViewCompositionalLayout {
+    static func createBasicListLayout() -> UICollectionViewLayout {
         
-        let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1)))
-        item.contentInsets = .init(top: 0, leading: 5, bottom: 16, trailing: 5)
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                              heightDimension: .absolute(200))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+      
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                              heightDimension: .absolute(44))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+                                                         subitems: [item])
+      
+        let section = NSCollectionLayoutSection(group: group)
         
+        let layout = UICollectionViewCompositionalLayout(section: section)
         
+        return layout
     }
+
+    
+//    static func compoLayout() -> UICollectionViewCompositionalLayout {
+//
+//        let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1)))
+//        item.contentInsets = .init(top: 0, leading: 5, bottom: 16, trailing: 5)
+//
+//        let group = NSCollectionLayoutGroup(layoutSize: .init(widthDimension: .fractionalWidth(0.9), heightDimension: .estimated(200)))
+//
+//        let section = NSCollectionLayoutSection(group: group)
+//
+//        section.orthogonalScrollingBehavior = .groupPaging
+//        section.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
+//        return
+//
+//    }
 }
 
 

@@ -24,9 +24,20 @@ class MainViewController: UIViewController {
         
         if #available(iOS 14.0, *) {
             if toggle == false {
-                let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-                let layout = UICollectionViewCompositionalLayout.list(using: configuration)
-                collectionView.collectionViewLayout = layout
+//                let configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
+//                let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+//                collectionView.translatesAutoresizingMaskIntoConstraints = false
+//
+//                NSLayoutConstraint.activate([
+//                    collectionView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 0.0),
+//                    collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0.0),
+//                    collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0.0),
+//                    collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0.0)
+//                ])
+////                collectionView.collectionViewLayout.invalidateLayout()
+//                collectionView.collectionViewLayout = layout
+                
+                collectionView.collectionViewLayout = Layout.createBasicListLayout()
                 toggle = true
             } else {
                 toggle = false
@@ -52,7 +63,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         collectionView.dataSource = self
         insertPageData(1...2)
-        Layout.setupCollectionViewLayOut(view, collectionView, false)
+        collectionView.collectionViewLayout = Layout.setupCollectionViewLayOut(view, collectionView, false)
     }
 
     
