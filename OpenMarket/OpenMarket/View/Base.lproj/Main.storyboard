@@ -41,8 +41,8 @@
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zkn-fS-tsm">
                                                             <rect key="frame" x="0.0" y="0.0" width="149" height="145.5"/>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NqW-ds-mQO">
-                                                            <rect key="frame" x="54" y="148.5" width="41.5" height="20.5"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NqW-ds-mQO">
+                                                            <rect key="frame" x="0.0" y="148.5" width="149" height="20.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -72,6 +72,7 @@
                                                         </label>
                                                     </subviews>
                                                     <constraints>
+                                                        <constraint firstItem="NqW-ds-mQO" firstAttribute="leading" secondItem="Zkn-fS-tsm" secondAttribute="leading" id="0Wk-OI-RzG"/>
                                                         <constraint firstItem="Zkn-fS-tsm" firstAttribute="leading" secondItem="DTV-4v-L6Y" secondAttribute="leading" id="3qN-w0-GGK"/>
                                                         <constraint firstAttribute="trailing" secondItem="Zkn-fS-tsm" secondAttribute="trailing" id="JOC-q1-GxE"/>
                                                         <constraint firstItem="Zkn-fS-tsm" firstAttribute="top" secondItem="DTV-4v-L6Y" secondAttribute="top" id="KV2-N4-biI"/>

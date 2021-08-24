@@ -19,21 +19,11 @@ class ViewController: UIViewController {
         collectionView.reloadData()
         collectionView.delegate = self
     }
-    var isLoading = false
-    var page = 2
+    private var isLoading = false
+    private var page = 2
 }
 
 extension ViewController: UICollectionViewDelegate {
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if indexPath.item == (test1.openMarketItemList.count - 1) {
-//
-//            OpenMarketLoadData().requestOpenMarketMainPageData(page: "\(page)") { items in
-//                self.test1.openMarketItemList.append(items)
-//            }
-//            //            collectionView.reloadData()
-//        }
-//    }
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height

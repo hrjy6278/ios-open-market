@@ -15,7 +15,7 @@ struct Layout {
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         let width = view.bounds.width / 2.5
-        let height = view.bounds.height / 2
+        let height = view.bounds.height / 3
         
         layout.itemSize = CGSize(width: width, height: height)
         

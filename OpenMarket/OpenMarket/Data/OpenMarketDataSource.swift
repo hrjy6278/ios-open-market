@@ -35,10 +35,13 @@ class OpenMarketDataSource: NSObject, UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        cell.isHidden = false
+        cell.tag = indexPath.item
+        cell.configure(item: self.openMarketItemList[indexPath.section].items[indexPath.item], indexPath) { cv in                print(indexPath, cv.indexPath(for: cell))
 
-        cell.configure(item: self.openMarketItemList[indexPath.section].items[indexPath.item])
-
+            if indexPath == cv.indexPath(for: cell) {
+                cell.downloadImage(reqeustURL: (self.openMarketItemList[indexPath.section].items[indexPath.row].thumbnails.first)!)
+            }
+        }
         return cell
     }
 }
