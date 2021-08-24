@@ -21,26 +21,24 @@ class ViewController: UIViewController {
     }
     var isLoading = false
     var page = 2
-    
 }
 
 extension ViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.item == (test1.openMarketItemList.count - 1) {
-            
-            OpenMarketLoadData().requestOpenMarketMainPageData(page: "2") { items in
-                self.test1.openMarketItemList.append(items)
-            }
-            //            collectionView.reloadData()
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        if indexPath.item == (test1.openMarketItemList.count - 1) {
+//
+//            OpenMarketLoadData().requestOpenMarketMainPageData(page: "\(page)") { items in
+//                self.test1.openMarketItemList.append(items)
+//            }
+//            //            collectionView.reloadData()
+//        }
+//    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let scroll = scrollView
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         
-        if (offsetY > contentHeight - scrollView.frame.height * 4) && !isLoading {
+        if (offsetY > contentHeight - scrollView.frame.height * 2) && !isLoading {
             loadMoreData("\(page)")
             page += 1
         }
@@ -59,5 +57,4 @@ extension ViewController: UICollectionViewDelegate {
             }
         }
     }
-    
 }
