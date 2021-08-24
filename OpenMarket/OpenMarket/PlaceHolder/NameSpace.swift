@@ -39,7 +39,11 @@ enum ContentType: CustomStringConvertible {
 }
 
 //MARK:-API key of OpenMarket server
+<<<<<<< HEAD
 enum RequestAPIKey: CustomStringConvertible {
+=======
+enum ReqeustAPIKey: CustomStringConvertible {
+>>>>>>> step1-2
     case title, descriptions, price, currency, stock, discountedPrice, images, password
     
     var description: String {
@@ -83,4 +87,9 @@ enum HTTPMethod: CustomStringConvertible {
             return "DELETE"
         }
     }
+}
+
+//MARK:-Boundary used in HTTP Body and Header
+enum Boundary {
+    static let literal = "Boundary\(UUID().uuidString)"
 }
