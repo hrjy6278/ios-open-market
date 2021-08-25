@@ -17,11 +17,12 @@ class OpenMarketItemCell: UICollectionViewCell, StrockText, DigitStyle {
 }
 
 extension OpenMarketItemCell {
-    // 여기서 메소드를 하나 만들어서 configure에서 메소드를 호출 -> 그 이미지를 반영
     func configure(item: OpenMarketItems.Item, _ indexPath: IndexPath, _ cv: UICollectionView,  _ ch: @escaping (UICollectionView, IndexPath) -> ()) {
+        
+        ch(cv, indexPath)
+
         titleLabel.text = item.title
  
-        ch(cv, indexPath)
 
         if item.stock == 0 {
             statusLabel.text = "품절"
@@ -45,13 +46,6 @@ extension OpenMarketItemCell {
         }
     }
    
-    func image반영(_ img: UIImage) {
-        // 다운받은 이미지를 셀에 반영
-        DispatchQueue.main.async {
-            self.itemImage.image = img
-        }
-    }
-    
     func downloadImage(reqeustURL: String, _ ip: IndexPath, _ cv: UICollectionView, _ completionHandler: @escaping (UIImage) -> ()) {
         
         URLSession.shared.dataTask(with: URL(string: reqeustURL)!) { data, error, _ in
@@ -64,21 +58,13 @@ extension OpenMarketItemCell {
             
             guard let downloadImage = UIImage(data: data) else { return }
             
-//            completionHandler(downloadImage)
+            // 문제가 되는 부분, cv, indexPath는 잘 전달이 되는데 cv.indexPath(for:cell)의 값이 계속  nil 입니다!
             DispatchQueue.main.async {
-//
-// guard let test2 = cv.indexPath(for: self)?.item else { return }
-// 원래의 인덱스, 셀 재사용 인덱스같을 때 이미지 => 이게 만족이 안됨
-
                 if ip.item == cv.indexPath(for: self)?.item {
-                
-                self.itemImage.image = downloadImage
-//                    self.tag = 0
+                    self.itemImage.image = downloadImage
                 }
             }
         }.resume()
-        // 셀이 큐안에 들어갔을 때 cancel 해라
-        
     }
 
     override func prepareForReuse() {
