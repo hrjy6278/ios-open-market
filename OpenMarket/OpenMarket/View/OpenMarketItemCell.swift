@@ -13,13 +13,18 @@ class OpenMarketItemCell: UICollectionViewCell, StrockText, DigitStyle {
     @IBOutlet weak var discountedPriceLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var itemImage: UIImageView!
+//    var indexpath = ""
 }
 
 extension OpenMarketItemCell {
     // 여기서 메소드를 하나 만들어서 configure에서 메소드를 호출 -> 그 이미지를 반영
-    func configure(item: OpenMarketItems.Item, _ indexPath: IndexPath, _ cv: @escaping (UICollectionView) -> ()) {
+    func configure(item: OpenMarketItems.Item, _ indexPath: IndexPath, _ cv: UICollectionView,  _ ch: @escaping (UICollectionView, UICollectionViewCell) -> ()) {
         titleLabel.text = item.title
-//        downloadImage(reqeustURL: item.thumbnails.first ?? "", indexPath)
+        
+//        if indexPath.item == cv.indexPath(for: self)?.item {
+//    downloadImage(reqeustURL: item.thumbnails.first ?? "", indexPath, cv)
+//        }
+        ch(cv)
 
         if item.stock == 0 {
             statusLabel.text = "품절"
@@ -43,7 +48,7 @@ extension OpenMarketItemCell {
         }
     }
    
-    func downloadImage(reqeustURL: String) {
+    func downloadImage(reqeustURL: String, _ ip: IndexPath, _ cv: UICollectionView) {
         
         URLSession.shared.dataTask(with: URL(string: reqeustURL)!) { data, error, _ in
             
@@ -56,12 +61,15 @@ extension OpenMarketItemCell {
             guard let downloadImage = UIImage(data: data) else { return }
             
             DispatchQueue.main.async {
-//                if self.tag == indexPath.item {
+
+//                guard let test2 = cv.indexPath(for: self)?.item else { return }
+                // 원래의 인덱스, 셀 재사용 인덱스같을 때 이미지 => 이게 만족이 안됨
+//                if ip.item == cv.indexPath(for: self)?.item {
                 self.itemImage.image = downloadImage
 //                    self.tag = 0
-                }
-            }.resume()
-        
+//                }
+            }
+        }.resume()
     }
 
     override func prepareForReuse() {
@@ -78,3 +86,7 @@ extension OpenMarketItemCell {
         priceLabel.textColor = .black
     }
 }
+//                print(cv)
+//                print("\(self) 셀")
+//                print(ip ,cv.indexPath(for: self))
+//                if self.tag == indexPath.item {
