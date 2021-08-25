@@ -13,15 +13,15 @@ class OpenMarketItemCell: UICollectionViewCell, StrockText, DigitStyle {
     @IBOutlet weak var discountedPriceLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var itemImage: UIImageView!
-//    var indexpath = ""
+    var indexpath = ""
 }
 
 extension OpenMarketItemCell {
     // 여기서 메소드를 하나 만들어서 configure에서 메소드를 호출 -> 그 이미지를 반영
-    func configure(item: OpenMarketItems.Item, _ indexPath: IndexPath, _ cv: UICollectionView,  _ ch: @escaping (UICollectionView) -> ()) {
+    func configure(item: OpenMarketItems.Item, _ indexPath: IndexPath, _ cv: UICollectionView,  _ ch: @escaping (UICollectionView, IndexPath) -> ()) {
         titleLabel.text = item.title
  
-        ch(cv)
+        ch(cv, indexPath)
 
         if item.stock == 0 {
             statusLabel.text = "품절"
@@ -45,7 +45,14 @@ extension OpenMarketItemCell {
         }
     }
    
-    func downloadImage(reqeustURL: String, _ ip: IndexPath, _ cv: UICollectionView) {
+    func image반영(_ img: UIImage) {
+        // 다운받은 이미지를 셀에 반영
+        DispatchQueue.main.async {
+            self.itemImage.image = img
+        }
+    }
+    
+    func downloadImage(reqeustURL: String, _ ip: IndexPath, _ cv: UICollectionView, _ completionHandler: @escaping (UIImage) -> ()) {
         
         URLSession.shared.dataTask(with: URL(string: reqeustURL)!) { data, error, _ in
             
@@ -57,20 +64,21 @@ extension OpenMarketItemCell {
             
             guard let downloadImage = UIImage(data: data) else { return }
             
+//            completionHandler(downloadImage)
             DispatchQueue.main.async {
-                
-//                guard let test2 = cv.indexPath(for: self)?.item else { return }
-                // 원래의 인덱스, 셀 재사용 인덱스같을 때 이미지 => 이게 만족이 안됨
-                print("-----------")
-                print(ip, cv.indexPath(for: self))
-                print("-----------")
+//
+// guard let test2 = cv.indexPath(for: self)?.item else { return }
+// 원래의 인덱스, 셀 재사용 인덱스같을 때 이미지 => 이게 만족이 안됨
 
                 if ip.item == cv.indexPath(for: self)?.item {
+                
                 self.itemImage.image = downloadImage
 //                    self.tag = 0
                 }
             }
         }.resume()
+        // 셀이 큐안에 들어갔을 때 cancel 해라
+        
     }
 
     override func prepareForReuse() {
@@ -91,3 +99,4 @@ extension OpenMarketItemCell {
 //                print("\(self) 셀")
 //                print(ip ,cv.indexPath(for: self))
 //                if self.tag == indexPath.item {
+//                큐 안에 있는지 확인하기!!!!!!!!!!
