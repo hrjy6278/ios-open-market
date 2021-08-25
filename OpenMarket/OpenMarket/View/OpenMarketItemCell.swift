@@ -18,12 +18,9 @@ class OpenMarketItemCell: UICollectionViewCell, StrockText, DigitStyle {
 
 extension OpenMarketItemCell {
     // 여기서 메소드를 하나 만들어서 configure에서 메소드를 호출 -> 그 이미지를 반영
-    func configure(item: OpenMarketItems.Item, _ indexPath: IndexPath, _ cv: UICollectionView,  _ ch: @escaping (UICollectionView, UICollectionViewCell) -> ()) {
+    func configure(item: OpenMarketItems.Item, _ indexPath: IndexPath, _ cv: UICollectionView,  _ ch: @escaping (UICollectionView) -> ()) {
         titleLabel.text = item.title
-        
-//        if indexPath.item == cv.indexPath(for: self)?.item {
-//    downloadImage(reqeustURL: item.thumbnails.first ?? "", indexPath, cv)
-//        }
+ 
         ch(cv)
 
         if item.stock == 0 {
@@ -61,13 +58,17 @@ extension OpenMarketItemCell {
             guard let downloadImage = UIImage(data: data) else { return }
             
             DispatchQueue.main.async {
-
+                
 //                guard let test2 = cv.indexPath(for: self)?.item else { return }
                 // 원래의 인덱스, 셀 재사용 인덱스같을 때 이미지 => 이게 만족이 안됨
-//                if ip.item == cv.indexPath(for: self)?.item {
+                print("-----------")
+                print(ip, cv.indexPath(for: self))
+                print("-----------")
+
+                if ip.item == cv.indexPath(for: self)?.item {
                 self.itemImage.image = downloadImage
 //                    self.tag = 0
-//                }
+                }
             }
         }.resume()
     }
