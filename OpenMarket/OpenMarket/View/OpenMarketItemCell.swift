@@ -17,13 +17,10 @@ class OpenMarketItemCell: UICollectionViewCell, StrockText, DigitStyle {
 }
 
 extension OpenMarketItemCell {
-    func configure(item: OpenMarketItems.Item, _ indexPath: IndexPath, _ cv: UICollectionView,  _ ch: @escaping (UICollectionView, IndexPath) -> ()) {
+    func configure(item: OpenMarketItems.Item, _ indexPath: IndexPath, _ cv: UICollectionView,  _ ch: (UICollectionView, IndexPath) -> ()) {
         
-        ch(cv, indexPath)
-
         titleLabel.text = item.title
- 
-
+        
         if item.stock == 0 {
             statusLabel.text = "품절"
             statusLabel.textColor = .systemYellow
@@ -44,29 +41,30 @@ extension OpenMarketItemCell {
             priceLabel.textColor = .systemGray
             priceLabel.text = "\(item.currency) \(apply(to: item.price))"
         }
+        
+        ch(cv, indexPath)
     }
-   
+    
     func downloadImage(reqeustURL: String, _ ip: IndexPath, _ cv: UICollectionView, _ completionHandler: @escaping (UIImage) -> ()) {
         
-        URLSession.shared.dataTask(with: URL(string: reqeustURL)!) { data, error, _ in
+        URLSession.shared.dataTask(with: URL(string: reqeustURL)!) { data, response, _ in
             
-            if let error = error {
-                dump(error)
+            if response != nil {
             }
             
             guard let data = data else { return }
             
             guard let downloadImage = UIImage(data: data) else { return }
             
-            // 문제가 되는 부분, cv, indexPath는 잘 전달이 되는데 cv.indexPath(for:cell)의 값이 계속  nil 입니다!
             DispatchQueue.main.async {
-                if ip.item == cv.indexPath(for: self)?.item {
+                print("1️⃣",ip, cv.indexPath(for: self))
+                if ip == cv.indexPath(for: self) {
                     self.itemImage.image = downloadImage
                 }
             }
         }.resume()
     }
-
+    
     override func prepareForReuse() {
         priceLabel.attributedText = nil
         discountedPriceLabel.textColor = .black
@@ -81,8 +79,3 @@ extension OpenMarketItemCell {
         priceLabel.textColor = .black
     }
 }
-//                print(cv)
-//                print("\(self) 셀")
-//                print(ip ,cv.indexPath(for: self))
-//                if self.tag == indexPath.item {
-//                큐 안에 있는지 확인하기!!!!!!!!!!

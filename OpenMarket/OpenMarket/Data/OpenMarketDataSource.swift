@@ -35,14 +35,11 @@ class OpenMarketDataSource: NSObject, UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        // configure호출부분부터 downloadImage부분을 비동기처리 해 보았는데 collectionView.indexPath(for:cell)의 값이 nil이 나왔습니다.(ㅜㅜ)
-        //DispatchQueue.global().async {
-            cell.configure(item: self.openMarketItemList[indexPath.section].items[indexPath.item], indexPath, collectionView) { cv, ip in
-                
-                cell.downloadImage(reqeustURL: (self.openMarketItemList[indexPath.section].items[indexPath.row].thumbnails.first)!, ip, cv) { img in
-                }
+        cell.configure(item: self.openMarketItemList[indexPath.section].items[indexPath.item], indexPath, collectionView) { cv, ip in
+            
+            cell.downloadImage(reqeustURL: (self.openMarketItemList[indexPath.section].items[indexPath.item].thumbnails.first)!, ip, cv) { img in
             }
-        //}
+        }
         
         return cell
     }
