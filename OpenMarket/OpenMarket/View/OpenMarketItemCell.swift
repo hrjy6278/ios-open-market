@@ -57,7 +57,7 @@ extension OpenMarketItemCell {
             guard let downloadImage = UIImage(data: data) else { return }
             
             DispatchQueue.main.async {
-                print("1️⃣",ip, cv.indexPath(for: self))
+                print("3️⃣",ip, cv.indexPath(for: self), "이미지 적용")
                 if ip == cv.indexPath(for: self) {
                     self.itemImage.image = downloadImage
                 }

@@ -35,8 +35,11 @@ class OpenMarketDataSource: NSObject, UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
+        print("1️⃣", indexPath,"cellForItemAt 호출")
+
         cell.configure(item: self.openMarketItemList[indexPath.section].items[indexPath.item], indexPath, collectionView) { cv, ip in
-            
+            print("2️⃣", indexPath,"downloadImage 호출")
+
             cell.downloadImage(reqeustURL: (self.openMarketItemList[indexPath.section].items[indexPath.item].thumbnails.first)!, ip, cv) { img in
             }
         }
