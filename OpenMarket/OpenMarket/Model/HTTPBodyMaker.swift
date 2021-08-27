@@ -3,7 +3,6 @@
 //  OpenMarket
 //
 //  Created by Do Yi Lee on 2021/08/24.
-//
 
 import Foundation
 
@@ -11,14 +10,14 @@ struct HTTPBodyMaker {
     //MARK: HTTPBody Parameter Type
     typealias requestBodyType = [String: Any]
     
-    //MARK: Private Static Method
-    private static func makeContentDispositionLine(contentType: ContentType) -> String {
+
+    //MARK: Private Method
+    private func makeContentDispositionLine(contentType: ContentType) -> String {
         return "Content-Disposition: \(contentType); "
     }
     
-    //MARK: Static Method
-    static func createHTTPBody(contentType: ContentType, with parameters: requestBodyType?, media: [Media]?) -> Data? {
-
+    //MARK: Method
+    func createHTTPBody(contentType: ContentType, with parameters: requestBodyType?, media: [Media]?) -> Data? {
         let lineBreak = "\r\n"
         var body = Data()
         
