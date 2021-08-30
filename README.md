@@ -1,4 +1,30 @@
-[🛒 오픈마켓 프로젝트](#------------)
+# 🛒 오픈마켓 프로젝트
+***팀 구성원* : *Tacocat(Ldoy), Jiss()***
+
+**프로젝트 기간 : 2021.08.09 ~ 08.20** 
+
+**그라운드 룰즈** 
+<details>
+<summary>GroundRules</summary>
+<div markdown="1">     
+- 커밋단위 : 메소드, 타입별로 커밋
+- 커밋메세지 : 카르마스타일
+- 브랜치 : main > 3-jiss > STEPn 형태로 진행 
+- 팀 내부 규칙
+    - 프로젝트의 진행 보다는 `왜` 에 초점을 맞추기 
+    - 한숨금지
+</div>
+</details>
+
+**UML**
+<details>
+<summary>UML</summary>
+<div markdown="1">       
+
+
+</div>
+</details>
+
   * [I. 앱 동작](#i-----)
   * [II. 요구 기능](#ii------)
       - [1.  서버 API를 통해 상품목록에 대한 정보 요청](#1-------api---------------------)
@@ -34,32 +60,7 @@
 
 
 
-# 🛒 오픈마켓 프로젝트
-***팀 구성원* : *Tacocat(Ldoy), Jiss()***
 
-**프로젝트 기간 : 2021.08.09 ~ 08.20** 
-
-**그라운드 룰즈** 
-<details>
-<summary>GroundRules</summary>
-<div markdown="1">     
-- 커밋단위 : 메소드, 타입별로 커밋
-- 커밋메세지 : 카르마스타일
-- 브랜치 : main > 3-jiss > STEPn 형태로 진행 
-- 팀 내부 규칙
-    - 프로젝트의 진행 보다는 `왜` 에 초점을 맞추기 
-    - 한숨금지
-</div>
-</details>
-
-**UML**
-<details>
-<summary>UML</summary>
-<div markdown="1">       
-
-
-</div>
-</details>
 
 
 ## I. 앱 동작
