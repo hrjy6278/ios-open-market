@@ -1,64 +1,65 @@
 # 🛒 오픈마켓 프로젝트
-***팀 구성원* : *Tacocat(Ldoy), Jiss()***
+- **팀 구성원 : Tacocat(Ldoy), Jiss()**
+- **프로젝트 기간 : 2021.08.09 ~ 08.20** 
 
-**프로젝트 기간 : 2021.08.09 ~ 08.20** 
+- **그라운드 룰즈** 
+    <details>
+    <summary>GroundRules</summary>
+    <div markdown="1">     
+    - 커밋단위 : 메소드, 타입별로 커밋
+    - 커밋메세지 : 카르마스타일
+    - 브랜치 : main > 3-jiss > STEPn 형태로 진행 
+    - 팀 내부 규칙
+        - 프로젝트의 진행 보다는 `왜` 에 초점을 맞추기 
+        - 한숨금지
+    </div>
+    </details>
 
-**그라운드 룰즈** 
-<details>
-<summary>GroundRules</summary>
-<div markdown="1">     
-- 커밋단위 : 메소드, 타입별로 커밋
-- 커밋메세지 : 카르마스타일
-- 브랜치 : main > 3-jiss > STEPn 형태로 진행 
-- 팀 내부 규칙
-    - 프로젝트의 진행 보다는 `왜` 에 초점을 맞추기 
-    - 한숨금지
-</div>
-</details>
-
-**UML**
-<details>
-<summary>UML</summary>
-<div markdown="1">       
-
-
-</div>
-</details>
-
-[I. 앱 동작](#i-----)<br>
-[II. 요구 기능](#ii------)<br>
-    [1.  서버 API를 통해 상품목록에 대한 정보 요청](#1-------api---------------------)<br>
-    [2.  받아온 정보를 컬렉션뷰로 구현](#2----------------------)<br>
-    [3.  Scrolling, Paging 구현 및 사용자 경험향상](#3----scrolling--paging----------------)<br>
-    [4. 네트워크무관테스트로 데이터 validity 확인](#4--------------------------)<br>
-[III. 이를 위한 설계](#iii---------)<br>
-    [1. MVC 디자인 패턴](#1-mvc---------)
-    [2. 네트워크 통신 타입, NetworkManager](#2-------------networkmanager)
-    [3. 컬렉션 뷰의 설계](#3----------)
-    [4. Scrolling, Paging 구현](#4-scrolling--paging---)
-        [4-1. Scrolling](#4-1-scrolling)
-        [4-2. Paging](#4-2-paging)
-    [5. 네트워크 무관 테스트](#5------------)
-    [6. 그 외 프로젝트 내부 코드와 이유](#6-------------------)
-    [7. 타입과 역할 분배](#7----------)
-[IV. 💫Trouble Shooting](#iv---trouble-shooting)💫
-    + [1. LazyLoading Probelm](#1-lazyloading-probelm)
-    + [2. HTTP Request POST시에 HTTP Message 503Error 가 Response 되는 에러!](#2-http-request-post---http-message-503error---response-------)
-    + [3. DataSource 와 Delegate가 분리된 상황에서 Model DATA를 여러군데에서 참조 할 수 있는 방법](#3-datasource---delegate-----------model-data---------------------)
-    + [4. Delegate타입을 따로 만들고 ViewController에서 할당 하였는데 반영되지 않는 문제](#4-delegate-----------viewcontroller---------------------)
-    + [5. CodingKey 프로토콜을 채택했음에도 채택하지 않았다는 경고 메세지가 나온 문제](#5-codingkey-------------------------------------)
-    + [6. cell의 textLabel에 데이터 및 속성이 제대로 반영되지 않는 문제](#6-cell--textlabel--------------------------)
-  * [V. 아쉽거나 해결하지 못한 부분](#v----------------)
-  * [VI. 관련 학습 내용](#vi---------)
-      - [학습 키워드](#------)
-      - [1. HTTP](#1-http)
-      - [2. URLSession](#2-urlsession)
-      - [2. Lazy Loading](#2-lazy-loading)
-      - [3. Cache](#3-cache)
-      - [4. UICollectionView](#4-uicollectionview)
+- **UML**
+    <details>
+    <summary>UML</summary>
+    <div markdown="1">       
 
 
+    </div>
+    </details>
 
+## 🛒목차
+- [I. 앱 동작](#i-----)
+- [II. 요구 기능](#ii------)
+    + [1.  서버 API를 통해 상품목록에 대한 정보 요청](#1-------api---------------------)
+    + [2.  받아온 정보를 컬렉션뷰로 구현](#2----------------------)
+    + [3.  Scrolling, Paging 구현 및 사용자 경험향상](#3----scrolling--paging----------------)
+    + [4. 네트워크 무관테스트](#4--------------------------)
+- [III. 이를 위한 설계](#iii---------)
+  * [1. MVC 디자인 패턴🌟](#1-mvc---------)
+  * [2. 네트워크 통신 타입, NetworkManager](#2-------------networkmanager)
+  * [3. 컬렉션 뷰의 설계](#3----------)
+  * [4. Scrolling, Paging 구현](#4-scrolling--paging---)
+    + [4-1. Scrolling](#4-1-scrolling)
+    + [4-2. Paging](#4-2-paging)
+  * [5. 네트워크 무관 테스트](#5------------)
+  * [6. 그 외 프로젝트 내부 코드와 이유](#6-------------------)
+      - [7. 타입과 역할 분배](#7----------)
+- [IV. 💫Trouble Shooting](#iv---trouble-shooting)
+  * [1. LazyLoading Probelm](#1-lazyloading-probelm)
+  * [2. HTTP Request POST시에 HTTP Message 503Error 가 Response 되는 에러!](#2-http-request-post---http-message-503error---response-------)
+  * [3. DataSource 와 Delegate가 분리된 상황에서 Model DATA를 여러군데에서 참조 할 수 있는 방법](#3-datasource---delegate-----------model-data---------------------)
+  * [4. Delegate타입을 따로 만들고 ViewController에서 할당 하였는데 반영되지 않는 문제](#4-delegate-----------viewcontroller---------------------)
+  * [5. CodingKey 프로토콜을 채택했음에도 채택하지 않았다는 경고 메세지가 나온 문제](#5-codingkey-------------------------------------)
+  * [6. cell의 textLabel에 데이터 및 속성이 제대로 반영되지 않는 문제](#6-cell--textlabel--------------------------)
+- [V. 아쉽거나 해결하지 못한 부분](#v----------------)
+- [VI. 관련 학습 내용](#vi---------)
+    + [학습 키워드](#------)
+    + [1. HTTP](#1-http)
+    + [2. URLSession](#2-urlsession)
+    + [2. Lazy Loading](#2-lazy-loading)
+    + [3. Cache](#3-cache)
+    + [4. UICollectionView](#4-uicollectionview)
+
+
+
+    <br><br> 
 
 
 
