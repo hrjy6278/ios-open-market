@@ -27,7 +27,7 @@
 </details>
 
 ## 목차 
-[I.앱동작](##-i-앱-동작) <br>
+[I.앱동작](##-i.-앱-동작) <br>
 [II.요구기능](##-ii-요구-기능) <br>
 [III.이를 위한 설계](##-iii-이를-위한-설계) <br>
 [IV.Trouble Shooting](##-iv-💫Trouble-Shooting) <br>
