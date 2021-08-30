@@ -30,12 +30,13 @@
 [II. 요구 기능](#ii-요구-기능)<br>
 [III. 이를 위한 설계](#iii-이를-위한-설계)<br>
 [IV. 💫Trouble Shooting💫](#iv-trouble-shooting)<br>
-    + [1. LazyLoading Probelm](#1-lazyloading-probelm)<br>
-    + [2. HTTP Request POST시에 HTTP Message 503Error 가 Response 되는 에러!](#2-http-request-post시에-http-message-503error-가-response-되는-에러)<br>
-    + [3. DataSource 와 Delegate가 분리된 상황에서 Model DATA를 여러군데에서 참조 할 수 있는 방법](#3-datasource-와-delegate가-분리된-상황에서-model-data를-여러군데에서-참조-할-수-있는-방법)<br>
-    + [4. Delegate타입을 따로 만들고 ViewController에서 할당 하였는데 반영되지 않는 문제](#4-delegate타입을-따로-만들고-viewcontroller에서-할당-하였는데-반영되지-않는-문제)<br>
-    + [5. CodingKey 프로토콜을 채택했음에도 채택하지 않았다는 경고 메세지가 나온 문제](#5-codingkey-프로토콜을-채택했음에도-채택하지-않았다는-경고-메세지가-나온-문제)<br>
-    + [6. cell의 textLabel에 데이터 및 속성이 제대로 반영되지 않는 문제](#6-cell의-textlabel에-데이터-및-속성이-제대로-반영되지-않는-문제)<br>
+ - [1. LazyLoading Probelm](#1-lazyloading-probelm)<br>
+ - [2. HTTP Request POST시에 HTTP Message 503Error 가 Response 되는 에러!](#2-http-request-post시에-http-message-503error-가-response-되는-에러)<br>
+ - [3. DataSource 와 Delegate가 분리된 상황에서 Model DATA를 여러군데에서 참조 할 수 있는 방법](#3-datasource-와-delegate가-분리된-상황에서-model-data를-여러군데에서-참조-할-수-있는-방법)<br>
+ - [4. Delegate타입을 따로 만들고 ViewController에서 할당 하였는데 반영되지 않는 문제](#4-delegate타입을-따로-만들고-viewcontroller에서-할당-하였는데-반영되지-않는-문제)<br>
+ - [5. CodingKey 프로토콜을 채택했음에도 채택하지 않았다는 경고 메세지가 나온 문제](#5-codingkey-프로토콜을-채택했음에도-채택하지-않았다는-경고-메세지가-나온-문제)<br>
+ - [6. cell의 textLabel에 데이터 및 속성이 제대로 반영되지 않는 문제](#6-cell의-textlabel에-데이터-및-속성이-제대로-반영되지-않는-문제)<br>
+
 [V. 아쉽거나 해결하지 못한 부분](#v-아쉽거나-해결하지-못한-부분)<br>
 [VI. 관련 학습 내용](#vi-관련-학습-내용)<br>
 
@@ -403,7 +404,8 @@
 - **다른 해결방법** 
     - `isPrepatching` 속성 false 로 해서 cell 화면에 보일 때만 `collectionView(_:cellForItemAt)` 를 호출 
 
-
+<br>
+    
 ### 2. HTTP Request POST시에 HTTP Message 503Error 가 Response 되는 에러!
 
 
@@ -488,7 +490,8 @@
 
 - **결론** : 해당 타입에 `Decodable`을 채택하면 프로토콜 기본 구현으로 `enum CodingKeys`가 자동으로 구현. 하지만 현재 상황은 `enum CodingKeys` 를 직접 구현하고 있기 때문에, `Decodable`을 채택한 타입의 프로퍼티들이 `enum CodingKeys`에 `case`에 전부 있어야 했다. 
 
-
+<br>
+    
 ### 6. cell의 textLabel에 데이터 및 속성이 제대로 반영되지 않는 문제
 - 상황 : titleLabel은 색이 검정색이어야하는데 statusLabel의 textColor인 노란색으로 나타나거나 상품에 맞지 않는 이름을 가지는 등의 문제가 생김
 - 이유 : cell 재사용 시 prepareForReuse 로 
@@ -589,7 +592,11 @@
 - Paging
 - UICollectionView
 - 비동기 통신
-
+<br>
+    
+<details>
+    <summary>학습내용 정리</summary>
+    <div markdown="1">       
 
 #### 1. HTTP 
 (1) HTTP란?
@@ -700,6 +707,8 @@ func numberOfSections(in collectionView: UICollectionView) -> Int {
 
 
 
+</div>
+</details>
 
 
 
