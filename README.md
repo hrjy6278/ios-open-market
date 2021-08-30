@@ -26,19 +26,19 @@
     </details>
 
 ## 🛒목차
-- [🛒 오픈마켓 프로젝트](#-🛒-오픈마켓-프로젝트)
-  * [I. 앱 동작](##-i-앱-동작)
-  * [II. 요구 기능](##-ii-요구-기능)
-  * [III. 이를 위한 설계](#-iii-이를-위한-설계)
-  * [IV. 💫Trouble Shooting💫](##-iv-trouble-shooting)
-    + [1. LazyLoading Probelm](###-1-lazyloading-probelm)
-    + [2. HTTP Request POST시에 HTTP Message 503Error 가 Response 되는 에러!](###-2-http-request-post시에-http-message-503error-가-response-되는-에러)
-    + [3. DataSource 와 Delegate가 분리된 상황에서 Model DATA를 여러군데에서 참조 할 수 있는 방법](###-3-datasource-와-delegate가-분리된-상황에서-model-data를-여러군데에서-참조-할-수-있는-방법)
-    + [4. Delegate타입을 따로 만들고 ViewController에서 할당 하였는데 반영되지 않는 문제](###-4-delegate타입을-따로-만들고-viewcontroller에서-할당-하였는데-반영되지-않는-문제)
-    + [5. CodingKey 프로토콜을 채택했음에도 채택하지 않았다는 경고 메세지가 나온 문제](###-5-codingkey-프로토콜을-채택했음에도-채택하지-않았다는-경고-메세지가-나온-문제)
-    + [6. cell의 textLabel에 데이터 및 속성이 제대로 반영되지 않는 문제](###-6-cell의-textlabel에-데이터-및-속성이-제대로-반영되지-않는-문제)
-  * [V. 아쉽거나 해결하지 못한 부분](##-v-아쉽거나-해결하지-못한-부분)
-  * [VI. 관련 학습 내용](##-vi-관련-학습-내용)
+- [🛒 오픈마켓 프로젝트](#🛒-오픈마켓-프로젝트)
+  * [I. 앱 동작](##i-앱-동작)
+  * [II. 요구 기능](##ii-요구-기능)
+  * [III. 이를 위한 설계](#iii-이를-위한-설계)
+  * [IV. 💫Trouble Shooting💫](##iv-trouble-shooting)
+    + [1. LazyLoading Probelm](###1-lazyloading-probelm)
+    + [2. HTTP Request POST시에 HTTP Message 503Error 가 Response 되는 에러!](###2-http-request-post시에-http-message-503error-가-response-되는-에러)
+    + [3. DataSource 와 Delegate가 분리된 상황에서 Model DATA를 여러군데에서 참조 할 수 있는 방법](###3-datasource-와-delegate가-분리된-상황에서-model-data를-여러군데에서-참조-할-수-있는-방법)
+    + [4. Delegate타입을 따로 만들고 ViewController에서 할당 하였는데 반영되지 않는 문제](###4-delegate타입을-따로-만들고-viewcontroller에서-할당-하였는데-반영되지-않는-문제)
+    + [5. CodingKey 프로토콜을 채택했음에도 채택하지 않았다는 경고 메세지가 나온 문제](###5-codingkey-프로토콜을-채택했음에도-채택하지-않았다는-경고-메세지가-나온-문제)
+    + [6. cell의 textLabel에 데이터 및 속성이 제대로 반영되지 않는 문제](###6-cell의-textlabel에-데이터-및-속성이-제대로-반영되지-않는-문제)
+  * [V. 아쉽거나 해결하지 못한 부분](##v-아쉽거나-해결하지-못한-부분)
+  * [VI. 관련 학습 내용](##vi-관련-학습-내용)
 
     <br><br> 
 
