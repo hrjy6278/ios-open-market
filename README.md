@@ -26,9 +26,9 @@
     </details>
 
 ## 🛒목차
-- [🛒 오픈마켓 프로젝트](#🛒-오픈마켓-프로젝트)
-  * [I. 앱 동작](##i-앱-동작)
-  * [II. 요구 기능](##ii-요구-기능)
+- [🛒 오픈마켓 프로젝트](🛒-오픈마켓-프로젝트)
+  * [I. 앱 동작](#i-앱-동작)
+  * [II. 요구 기능](#ii-요구-기능)
   * [III. 이를 위한 설계](#iii-이를-위한-설계)
   * [IV. 💫Trouble Shooting💫](##iv-trouble-shooting)
     + [1. LazyLoading Probelm](###1-lazyloading-probelm)
