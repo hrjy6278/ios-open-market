@@ -28,20 +28,7 @@
 - [🛒 오픈마켓 프로젝트](#------------)
   * [I. 앱 동작](#i-----)
   * [II. 요구 기능](#ii------)
-      - [1.  **서버 API를 통해 상품목록에 대한 정보 요청**](#1-------api---------------------)
-      - [2.  **받아온 정보를 컬렉션뷰로 구현**](#2----------------------)
-      - [3.  **Scrolling, Paging 구현 및 사용자 경험향상**](#3----scrolling--paging----------------)
-      - [4. **네트워크 무관 테스트**](#4----------------)
   * [III. 이를 위한 설계](#iii---------)
-    + [1. MVC 디자인 패턴](#1-mvc-------)
-    + [2. 네트워크 통신 타입, NetworkManager](#2-------------networkmanager)
-    + [3. 컬렉션 뷰의 설계](#3----------)
-    + [4. Scrolling, Paging 구현](#4-scrolling--paging---)
-      - [4-1. Scrolling](#4-1-scrolling)
-      - [4-2. Paging](#4-2-paging)
-    + [5. 네트워크 무관 테스트](#5------------)
-    + [6. 그 외 프로젝트 내부 코드와 이유](#6-------------------)
-        * [7. 타입과 역할 분배](#7----------)
   * [IV. 💫Trouble Shooting💫](#iv---trouble-shooting--)
     + [1. LazyLoading Probelm](#1-lazyloading-probelm)
     + [2. HTTP Request POST시에 HTTP Message 503Error 가 Response 되는 에러!](#2-http-request-post---http-message-503error---response-------)
@@ -51,12 +38,7 @@
     + [6. cell의 textLabel에 데이터 및 속성이 제대로 반영되지 않는 문제](#6-cell--textlabel--------------------------)
   * [V. 아쉽거나 해결하지 못한 부분](#v----------------)
   * [VI. 관련 학습 내용](#vi---------)
-      - [학습 키워드](#------)
-      - [1. HTTP](#1-http)
-      - [2. URLSession](#2-urlsession)
-      - [2. Lazy Loading](#2-lazy-loading)
-      - [3. Cache](#3-cache)
-      - [4. UICollectionView](#4-uicollectionview)
+
     <br><br> 
 
 
@@ -107,7 +89,7 @@
 - [ HTTP 학습내용 요약 ](####1.-HTTP)
  - 서버API분석 결과 GET, POST, PUSH, PUT, DELETE 의 메소드에 따라 Response Message의 내용이 달라짐을 알 수 있었다. 
  - 각각의 HTTPMethod 마다 네트워크 요청을 진행하는 메소드를 만들지 않고 하나의 타입(혹은 메소드)로 HTTP Request를 할 수 있도록 초점을 맞추고 아래와 같이 구현하였다. 
-     ```=swift 
+     ```= swift 
     //MARK:-NetworkManager
     struct NetworkManager {
         :
@@ -132,8 +114,7 @@
                 }
             }.resume()
         }
-    }
-     ```
+    }```
     
 </div>
 </details>
@@ -147,64 +128,62 @@
 
 
 - UICollectionViewDataSource 프로토콜을 채택한 타입을 새롭게 만들어 구성하였음.
-    - NSObject를 채택한 이유
+    - **NSObject를 채택한 이유**
     `UICollectionViewDataSource`가 `NSObjectProtocol`을 상속받고 있음. 이에따라 `UICollectionViewDataSource`를 준수하려면 `NSObjectProtocol`의 요구사항을 준수해야 됨.
 `NSObject` 클래스는 `NSObjectProtocol` 을 채택하고 준수한 타입임. 이에따라 `NSObject`를 상속받아 `UICollectionViewDataSource`의 요구사항을 준수 할 수 있게됨.
-```swift=
-class OpenMarketDataSource: NSObject, 
-                            UICollectionViewDataSource {
-                            
-}
-```
+        ```swift=
+        class OpenMarketDataSource: NSObject, 
+                                    UICollectionViewDataSource {
+
+        }
+        ```
 - cellForItemAt 메서드에서 셀을 구성하는 부분에, 이미지를 다운로드하거나, 캐시저장소에있는 이미지를 가져오도록 구성함. 해당 작업은 네트워크 구현이 필수적이라, 완료시점을 클로저로 넘겨주어 네트워크를 처리함. UI를 변경하는 cell.configure 메서드가 있기 때문에 main Thread에서 실행 될 수 있도록 함.
 
 - 이미지를 다운로드를 했을 경우 Notication으로 완료되었다는 시점을 알려주게 된다. 이는 계속 Notication을 Post할 여지가 있으므로 한번만 POST 할수 있도록 분기문을 작성함.
+    ```swift=
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let taskIdentifier = imageLoader.downloadImage(reqeustURL: urlString, imageCachingKey: idNumber) { downloadImage in
+        DispatchQueue.main.async {
+            if self.isImageDownload == false {
+                NotificationCenter.default.post(name: .imageDidDownload, object: nil)
+                self.isImageDownload = true
+            }    
 
-```swift=
-func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-let taskIdentifier = imageLoader.downloadImage(reqeustURL: urlString, imageCachingKey: idNumber) { downloadImage in
-    DispatchQueue.main.async {
-        if self.isImageDownload == false {
-            NotificationCenter.default.post(name: .imageDidDownload, object: nil)
-            self.isImageDownload = true
-        }    
-
-        cell.configure(item: currentItem, thumnail: downloadImage)
-        cell.isHidden = false
+            cell.configure(item: currentItem, thumnail: downloadImage)
+            cell.isHidden = false
+            }
         }
     }
-}
-```
+    
+    ```
 
 - CollectionView Layout은 Delegate를 사용한게 아닌 UICollectionViewFlowLayout 클래스 인스턴스를 만들어 레이아웃 설정을 해준 뒤, CollectionView에 적용시켜주었다.
+    ```swift=
+        struct Layout {
+            static func generate(_ view: UIView) -> UICollectionViewFlowLayout {
+            let layout = UICollectionViewFlowLayout()
+            let width = view.bounds.width / 2.2
+            let height = view.bounds.height / 3.6
 
-```swift=
-struct Layout {
-    static func generate(_ view: UIView) -> UICollectionViewFlowLayout {
-    let layout = UICollectionViewFlowLayout()
-    let width = view.bounds.width / 2.2
-    let height = view.bounds.height / 3.6
-    
-    //셀의 사이즈를 설정하는 부분
-    layout.itemSize = CGSize(width: width, height: height)
-    
-    //셀과 셀의 최소 간격을 설정하는 부분
-    layout.minimumInteritemSpacing = 10
-    
-    //라인(줄)과의 최소 간격
-    layout.minimumLineSpacing = 10
-    
-    //셀의 테두리의 여백을 설정하는 부분
-    layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+            //셀의 사이즈를 설정하는 부분
+            layout.itemSize = CGSize(width: width, height: height)
 
-    return layout
-    }
-}
-```
-![image](https://user-images.githubusercontent.com/71247008/131338664-48d21b64-c228-4111-add0-2ebd4726a21e.png)
+            //셀과 셀의 최소 간격을 설정하는 부분
+            layout.minimumInteritemSpacing = 10
+
+            //라인(줄)과의 최소 간격
+            layout.minimumLineSpacing = 10
+
+            //셀의 테두리의 여백을 설정하는 부분
+            layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+
+            return layout
+            }
+        }
+    ```
 
 - 스택뷰를 최대한 활용하여 추후에 유지보수에도 강력하고, 쉽게 대처할 수 있도록 설계함.
-
+    <img src="https://user-images.githubusercontent.com/71247008/131338664-48d21b64-c228-4111-add0-2ebd4726a21e.png" width="400" height="200">
 
 </div>
 </details>
@@ -216,9 +195,10 @@ struct Layout {
 #### 4-1. Scrolling
 <details>
 <summary> Scrolling 기능 설계와 그 이유</summary>
-<div markdown="1">   
+<div markdown="1">  
+    
 - **`singleton`** 디자인 패턴을 이용해 구현한 **`ImageCacher`**
-    ```swift=
+    ``` swift=
     class ImageCacher: NSCache<NSNumber, UIImage> {
         static let shared = ImageCacher()
 
@@ -244,6 +224,7 @@ struct Layout {
     - 네트워크 요청을 통해 컬렉션뷰의 셀에 반영하는 이미지를 NSCache 객체를 이용해 내부에 저장하였다. 
         - **이유** : 캐쉬 방법을 이용하면 이미지를 가져오는 속도가 서버에 요청하는 것보다 빠르기 때문에 캐쉬를 이용해서 스크롤 할 때 사용자 경험의 만족도가 높아지게 하기 위해서. 
     - **`singleton`으로 구현한 이유** : 자주사용되는 이미지들을 `NSCache`를 사용하여 구현함. 추후에 다른 `ViewController` 가 사용 할 수 있음을 고려하여, singleton 으로 구현함.
+    
 - **NSCache 와  URLCache 중 NSCache를 선택한 이유**
      - 스위프트에서 이미지를 caching하는 방법에는 대표적으로 `URLCache`, `NSCache` 두 가지가 있다. 당시에는 in-memory방식으로 caching하려고 해서 URLCache를 선택하지 않았지만 지금 생각해보니 코드의 확장성을 위해서 URLCache를 사용해도 좋았을 거란 생각이든다. 
     - **이유** : `URLCache`는 캐슁할 메모리용량 설정할 수 있고 in-memory, on-disk방식을 중 하나를 선택할 수 있기 때문이다. 또한 `NSCache`는 메모리가 모자랄 때 저장된 데이터 중 사라지는 데이터에 대한 규칙이 없기 때문에 cache된 객체가 저장되어있을 거란 보장이 없다. 즉 스크롤링에 대한 성능 및 사용자 경험 향상을 보장 하지 않는다. 
@@ -254,19 +235,19 @@ struct Layout {
                 [링크](https://medium.com/@master13sust/to-nscache-or-not-to-nscache-what-is-the-urlcache-35a0c3b02598)
             </div>
             </details>
+    
 </div>
 </details>
-
-<br>
 
 #### 4-2. Paging 
 <details>
 <summary> Paging 기능 설계와 그 이유</summary>
 <div markdown="1">  
+    
 - **`OpenMarketCollectionViewDelegate` 에서 scrollViewDidScroll 메소드를 사용하여 paging 구현**
     - **이유** : 사실 내부 코드에 대해 완벽하게 이해하고 있는것이 아니라서 코드를 작성할지 말지 많이 고민했는데 우선 기능을 구현해 보자는 마음으로 추가
     - 리드미를 작성하면서 공부한 scrollViewDIdScroll내부의 코드에 관하여 
-        ```=swift
+        ```= swift
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
             // 화면에 보이는 영역의 가장 왼쪽 윗 상단의 CGPoint값 : contentOffSet 
             let offsetY = scrollView.contentOffset.y
@@ -292,6 +273,7 @@ struct Layout {
 
     - paging을 구현하는 방법을 조사해보았다. 위와 같이 `ScrollContentOffset`을 사용하거나 `collectionView(_:willDisplay:forItemAt:)` 메소드를 사용 해서 특정 시점에  데이터 요청, [UICollectionViewDataSourcePrefetching](https://developer.apple.com/documentation/uikit/uicollectionviewdatasourceprefetching/prefetching_collection_view_data) 프로토콜을 사용하는 방법 등이 있다. 
     - 현 프로젝트에서 사용한 첫 번째 방법은 컨텐츠의 특정 높이에서 데이터를 네트워크요청으로 가져오도록 하고 위에서 소개한 collectionView(_:willDisplay:forItemAt:) 메소드를 통한 방법은 indexPath가 기준이 되기 때문에 구현해야하는 상황에 따라 선택하면 될 것 같다. 
+    
 </div>
 </details>
 
@@ -301,40 +283,41 @@ struct Layout {
 <details>
 <summary> 프로젝트에서 구현한 테스트타입에 관하여 </summary>
 <div markdown="1">  
-        - 서버가 구축되기 이전에 서버가 전송하는 JSON 데이터를 오류없이 Decoding하는 것을 테스트하기 위해 OpenMarketTests 클래스에서 UnitTest를 진행했다. 
-        - 디코딩한 데이터의 특정 페이지 혹은 특정 아이템의 속성을 추출하고 그 값이 예상 값과 맞는 메서드와 맞지 않는 메서드를 구현하였다. 
-        ```=swift
-        //성공케이스 
-        func test_OpenMarketItems의_페이지가_1이다() {
-                //given
-                let assetData = NSDataAsset(name: "Items")!
+ 
+- 서버가 구축되기 이전에 서버가 전송하는 JSON 데이터를 오류없이 Decoding하는 것을 테스트하기 위해 OpenMarketTests 클래스에서 UnitTest를 진행했다. 
+- 디코딩한 데이터의 특정 페이지 혹은 특정 아이템의 속성을 추출하고 그 값이 예상 값과 맞는 메서드와 맞지 않는 메서드를 구현하였다. 
+    ```= swift
+    //성공케이스 
+    func test_OpenMarketItems의_페이지가_1이다() {
+            //given
+            let assetData = NSDataAsset(name: "Items")!
 
-                //when
-                let decodedData = try! ParsingManager
-                                .jsonDecode(data: assetData.data, 
+            //when
+            let decodedData = try! ParsingManager
+                            .jsonDecode(data: assetData.data, 
                                             type: OpenMarketItems.self)
 
-                //then
-                XCTAssertEqual(decodedData.page, 1)
-            }
+            //then
+            XCTAssertEqual(decodedData.page, 1)
+        }
 
-        //실패케이스 
-        func test_Item에셋파일을_OpenMarketItems타입으로파싱했을때_실패한다() {
-                //given
-                let assetData = NSDataAsset(name: "Items")!
+    //실패케이스 
+    func test_Item에셋파일을_OpenMarketItems타입으로파싱했을때_실패한다() {
+            //given
+            let assetData = NSDataAsset(name: "Items")!
 
-                //when
-                do {
+            //when
+            do {
                     _ = try ParsingManager
-                            .jsonDecode(data: assetData.data, 
-                                        type: OpenMarketItems.self)
-                } catch let error as ParsingError {
-                    //then
-                    XCTAssertEqual(error, .decodingError)
-                } catch {
-                }
+                        .jsonDecode(data: assetData.data, 
+                                    type: OpenMarketItems.self)
+            } catch let error as ParsingError {
+                //then
+                XCTAssertEqual(error, .decodingError)
+            } catch {
             }
-        ```
+        }
+        
 </div>
 </details>
     <br>
@@ -399,7 +382,7 @@ struct Layout {
 - **상황** : 셀이 이미지 다운로드 작업을 비동기로 시작할때, 재사용되어 다른 위치에서 이미지를 보여주는 에러
 
 - **첫 시도** : indexPath를 이용해 cell이 재사용 될 때 `collectionView(_:cellForItemAt)` 메소드가 실행된 `indexPath` 에서만 이미지를 반영하도록 함
-    ```=swift
+    ```= swift
     // 코드예시
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         :
@@ -422,12 +405,15 @@ struct Layout {
 
 
 ### 2. HTTP Request POST시에 HTTP Message 503Error 가 Response 되는 에러!
-> **에러로그**
->  
-> ![](https://i.imgur.com/DiN3Mwl.png)
-    - HTTP Body에 Multipart 형식인 DATA넣고 POST를 할 때 계속 503 Error
-    - 
-<br>
+
+
+| 에러로그                                                             |
+| -------------------------------------------------------------------- |
+| <img src="https://i.imgur.com/DiN3Mwl.png" width="500" height="300"> |
+| HTTP Body에 Multipart 형식인 DATA넣고 POST를 할 때 계속 503 Error    |
+
+  
+    
 - **503 에러? 그건 서버에러 아냐?**
     - 라고 생각해서 Server를 제공하는 Heroku 홈페이지에 들어가서 error관련 문서를 확인 했는데 다음과 같은 내용이 있었다
         >Whenever your app experiences an error, Heroku will return a standard error page with the HTTP status code 503. To help you debug the underlying error, however, the platform will also add custom error information to your logs. Each type of error gets its own error code, with all HTTP errors starting with the letter H and all runtime errors starting with R. Logging errors start with L. https://devcenter.heroku.com/articles/error-codes
@@ -442,7 +428,7 @@ struct Layout {
 
     3) body에 옵셔널을 벗기지 않고 입력함
         - httpBody에 들어가는 내용을 print를 이용해 확인해보았는데 아래와 같이 입력되는 것을 확인했다. 즉 Optional() 자체도 encode되어 입력되는 상태였다. 
-        ```=swift
+        ```= swift
         for photo in image {
             body.append("--\(boundary + lineBreak)")
             body.append("Content-Disposition: form-data; name=\"\(photo?.key)\"; filename=\"\(photo?.filename)\"\(lineBreak)")
@@ -454,7 +440,9 @@ struct Layout {
         ![](https://i.imgur.com/5XYq373.png)
         - 해결 : 옵셔널 값을 벗겨주었다. 
 <br>
+
 ### 3. DataSource 와 Delegate가 분리된 상황에서 Model DATA를 여러군데에서 참조 할 수 있는 방법
+    
 - 현재는 `View`에 보여질 데이터가 `DataSource`의 프로퍼티로 저장되어 있다. Delegate타입에도 해당 모델의 Data이 필요한 상황이 생겼다. 이에 우리는 Data 프로퍼티를 Static으로 선언하여서 타입프로퍼티로 만들어 다른곳에서 사용할 수 있도록 해결하였다. ![image](https://user-images.githubusercontent.com/71247008/131210377-b885482f-4186-4239-8e53-21a4d831959c.png)
     - 다만 이 방법은 지금 README를 작성하는 시간에 다시 코드를 보니 좋은 방법이 아닌 것 같다는 생각이 든다. 
         - 이유 : DataSource 타입 프로퍼티이기 때문에 DataSource가 교체되거나하는 상황에서 다시 DATA 모델은 어딘가에 생성해야 되기때문
@@ -475,7 +463,7 @@ struct Layout {
 
 - **이유** : `UICollectionView`의 `dataSource`, `delegate`는 **weak property**이기 때문에 viewDidLoad내부에서 인스턴스를 만드는 것이 아니라 `ViewController`의 property로 delegate로 사용할 인슨턴스를 만든 후 해당 속성을 `viewDidLoad`메서드 내부에서 컬렉션뷰의 `delegate`로 할당해야한다. 
 - **해결** : 아래와 같이 리팩토링 진행
-    ```=swift
+    ```= swift
     class ViewController {
         let delegate = OpenMarketDelegate()
         :  
@@ -490,8 +478,7 @@ struct Layout {
 
 
 ### 5. CodingKey 프로토콜을 채택했음에도 채택하지 않았다는 경고 메세지가 나온 문제 
-![](https://i.imgur.com/N4h9PEY.jpg)
-
+<img src="https://i.imgur.com/N4h9PEY.jpg" width="500" height="300">
 - **문제의 원인**
     - 가설1 : nested type으로 Decodable프로토콜 채택하는 경우 CodingKey 사용이 허용되지 않는다
     - 가설2 : CodingKey 프로토콜 채택하는 과정에서 우리가 모르는 것이 있다. 
@@ -587,7 +574,7 @@ struct Layout {
 </div>
 </details>
 
-<br><br><br>
+<br><br>
 
 
 ---
@@ -616,7 +603,7 @@ struct Layout {
     - Body는 리소스를 가져오는 Request는 보통 본문이 없다. 전달해야될 내용이 없기 때문이다. 일부 요청은 업데이트를 위해 서버에 데이터를 전송한다. POST시 그럴 확률이 높다. Data를 Body에 담아 request 요청을 한다.
     - Body의 종류는 단일 리소스, 각기 다른 리소스가 있을 경우 멀티파트를 사용한다.
     - Request HTTP 메시지 예시 
-    ```swift=
+    ``` swift=
     POST / HTTP / 1.1                   <- 시작부분
     HOST: localhost:8000                <- header
     Content-Type: multipart/form-data;  <- header
@@ -649,7 +636,7 @@ struct Layout {
     - URLRequest를 통하여 서버로 `request`를 보낼 때 어떤 HTTP Request Method를 사용할 것인지, 어떤 내용을 전송할 것인지 설정 할 수 있다. 
     - HTTPRequest의 setValue, addValue을 사용하여 헤더메시지를 설정하거나, 추가 할 수 있다. 
     - 프로젝트 URLRequest 적용사항.
-    ```swift=
+    ``` swift=
     private static func createRequest(httpMethod: HTTPMethod, url: URL, body: Data?, _ contentType: ContentType) -> URLRequest {
         var request = URLRequest(url: url)
         request.setValue("\(contentType); boundary=\(Boundary.literal)", forHTTPHeaderField: "Content-Type")
@@ -688,7 +675,7 @@ struct Layout {
 - 컬렉션뷰는 테이블뷰와 비슷한 구조를 가지고 있다. `View`에 나타내야하는 정보를 `DataSource`로 요구하며, 이벤트와 같은 기능을 `Delegate`로 구현하고 있다. 다만 다른점이 있다면, `CollectionViewFlowLayout` 으로 셀의 크기와 너비를 설정해주어야 한다.
 - 기본적으로 DataSource 구현은 TableView와 많이 닮아 있다. numberOfSections 메서드로 섹션의 갯수를 지정해 줄 수 있으며, numberOfItemsInSection 메서드로 섹션안에 셀이 얼마나 있어야 할지 알려주게 된다. 마지막으로 cellForItemAt 메서드로 셀을 생성하고, 해당 셀에 데이터를 주입시켜 반환을 시키면 된다.
 
-```swift= 
+``` swift= 
 //    섹션의 갯수를 설정하는 부분
 func numberOfSections(in collectionView: UICollectionView) -> Int {
         OpenMarketDataSource.openMarketItemList.count
@@ -708,6 +695,7 @@ func numberOfSections(in collectionView: UICollectionView) -> Int {
 <img src="https://user-images.githubusercontent.com/71247008/131330825-95071f5d-ed95-459b-980a-64101bd31e10.png" width="400" height="200">
     - FlowLayout은 콜렉션 뷰의 delegate 나 Flowlayout 클래스의 프로퍼티를 사용하여 셋팅 할 수 있다.
     - delegate는 CollecvionView가 header 나 footer 를 설정하거나, 셀마다 Size를 다르게 하고 싶을 때 유용하다고 하다.
+
 
 
 
