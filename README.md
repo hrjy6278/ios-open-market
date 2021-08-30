@@ -684,7 +684,8 @@ struct Layout {
     
      
 #### 4. UICollectionView
-![image](https://user-images.githubusercontent.com/71247008/131329119-da338da1-ceff-4a48-8646-9270e2c4d08f.png)
+<img src="https://user-images.githubusercontent.com/71247008/131329119-da338da1-ceff-4a48-8646-9270e2c4d08f.png" width="400" height="300">
+<br><br>
 
 - 컬렉션뷰는 테이블뷰와 비슷한 구조를 가지고 있다. `View`에 나타내야하는 정보를 `DataSource`로 요구하며, 이벤트와 같은 기능을 `Delegate`로 구현하고 있다. 다만 다른점이 있다면, `CollectionViewFlowLayout` 으로 셀의 크기와 너비를 설정해주어야 한다.
 - 기본적으로 DataSource 구현은 TableView와 많이 닮아 있다. numberOfSections 메서드로 섹션의 갯수를 지정해 줄 수 있으며, numberOfItemsInSection 메서드로 섹션안에 셀이 얼마나 있어야 할지 알려주게 된다. 마지막으로 cellForItemAt 메서드로 셀을 생성하고, 해당 셀에 데이터를 주입시켜 반환을 시키면 된다.
@@ -706,7 +707,7 @@ func numberOfSections(in collectionView: UICollectionView) -> Int {
 ```
 
 - UICollectionViewFlowLayout
-- ![image](https://user-images.githubusercontent.com/71247008/131330825-95071f5d-ed95-459b-980a-64101bd31e10.png)
+<img src="https://user-images.githubusercontent.com/71247008/131330825-95071f5d-ed95-459b-980a-64101bd31e10.png" width="400" height="200">
     - FlowLayout은 콜렉션 뷰의 delegate 나 Flowlayout 클래스의 프로퍼티를 사용하여 셋팅 할 수 있다.
     - delegate는 CollecvionView가 header 나 footer 를 설정하거나, 셀마다 Size를 다르게 하고 싶을 때 유용하다고 하다.
 
