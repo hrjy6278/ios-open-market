@@ -30,7 +30,7 @@
   * [I. 앱 동작](#i-----)
   * [II. 요구 기능](#ii------)
   * [III. 이를 위한 설계](#iii---------)
-  * [IV. 💫Trouble Shooting💫](##-iv-trouble-shooting)
+  * [IV. 💫Trouble Shooting💫](##iv-trouble-shooting)
     + [1. LazyLoading Probelm](#1-lazyloading-probelm)
     + [2. HTTP Request POST시에 HTTP Message 503Error 가 Response 되는 에러!](#2-http-request-post---http-message-503error---response-------)
     + [3. DataSource 와 Delegate가 분리된 상황에서 Model DATA를 여러군데에서 참조 할 수 있는 방법](#3-datasource---delegate-----------model-data---------------------)
