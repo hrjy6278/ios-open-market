@@ -479,6 +479,7 @@
 
 ### 5. CodingKey 프로토콜을 채택했음에도 채택하지 않았다는 경고 메세지가 나온 문제 
 <img src="https://i.imgur.com/N4h9PEY.jpg" width="500" height="300">
+
 - **문제의 원인**
     - 가설1 : nested type으로 Decodable프로토콜 채택하는 경우 CodingKey 사용이 허용되지 않는다
     - 가설2 : CodingKey 프로토콜 채택하는 과정에서 우리가 모르는 것이 있다. 
