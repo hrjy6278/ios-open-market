@@ -6,7 +6,7 @@
 
 **그라운드 룰즈** 
 <details>
-<summary>UML</summary>
+<summary>GroundRules</summary>
 <div markdown="1">     
 - 커밋단위 : 메소드, 타입별로 커밋
 - 커밋메세지 : 카르마스타일
@@ -17,7 +17,7 @@
 </div>
 </details>
 
-UML
+**UML**
 <details>
 <summary>UML</summary>
 <div markdown="1">       
@@ -27,24 +27,26 @@ UML
 </details>
 
 ## 목차 
-[앱동작](##-앱-동작) <br>
-[요구기능](##-요구-기능) <br>
-[이를 위한 설계](##-이를-위한-설계) <br>
-[Trouble Shooting](##-💫Trouble-Shooting) <br>
-[학습내용](##-관련-학습-내용)  <br>
+[I.앱동작](##-i-앱-동작) <br>
+[II.요구기능](##-ii-요구-기능) <br>
+[III.이를 위한 설계](##-iii-이를-위한-설계) <br>
+[IV.Trouble Shooting](##-iv-💫Trouble-Shooting) <br>
+[V.아쉽거나 해결하지 못한 부분](##-v-아쉽거나-해결하지-못한-부분)
+[VI.학습내용](##vi-관련-학습-내용)  <br>
 
 
-## 앱 동작 
+## I. 앱 동작 
 ![Simulator Screen Recording - iPhone 12 - 2021-08-27 at 15 04 23](https://user-images.githubusercontent.com/71247008/131079919-cfbaccc2-beea-49cf-a79a-8f41b0d0f38c.gif)
 
-## 요구 기능
+<br><br>
+## II. 요구 기능
 #### 1.  **서버 API를 통해 상품목록에 대한 정보 요청**
 #### 2.  **받아온 정보를 컬렉션뷰로 구현**
 #### 3.  **Scrolling, Paging 구현 및 사용자 경험향상**
 #### 4. **네트워크 무관테스트로 정확도? 확인하기**
-<br>
+<br><br>
 
-## 이를 위한 설계
+## III. 이를 위한 설계
 
 ### 1. MVC 디자인 패턴🌟
 
@@ -364,7 +366,7 @@ struct Layout {
 
 <br> 
 
-## 💫Trouble Shooting
+## IV. 💫Trouble Shooting
 
 ### 1. LazyLoading Probelm
 - **상황** : 셀이 이미지 다운로드 작업을 비동기로 시작할때, 재사용되어 다른 위치에서 이미지를 보여주는 에러
@@ -481,7 +483,7 @@ struct Layout {
 
 
 
-## 아쉽거나 해결하지 못한 부분
+## V. 아쉽거나 해결하지 못한 부분
 
 <details>
 <summary>6가지 아쉬움</summary>
@@ -563,7 +565,7 @@ struct Layout {
 
 ---
 
-## 관련 학습 내용 
+## VI. 관련 학습 내용 
 #### 학습 키워드
 - HTTP
 - 네트워크 통신
