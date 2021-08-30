@@ -5,7 +5,8 @@
 - **그라운드 룰즈** 
     <details>
     <summary>GroundRules</summary>
-    <div markdown="1">     
+    <div markdown="1">    
+        
     - 커밋단위 : 메소드, 타입별로 커밋
     - 커밋메세지 : 카르마스타일
     - 브랜치 : main > 3-jiss > STEPn 형태로 진행 
@@ -19,7 +20,7 @@
     <details>
     <summary>UML</summary>
     <div markdown="1">       
-
+        <img src="https://i.imgur.com/h7WHBFc.png" width="1000" height="700">
 
     </div>
     </details>
@@ -89,7 +90,7 @@
 - [ HTTP 학습내용 요약 ](####1.-HTTP)
  - 서버API분석 결과 GET, POST, PUSH, PUT, DELETE 의 메소드에 따라 Response Message의 내용이 달라짐을 알 수 있었다. 
  - 각각의 HTTPMethod 마다 네트워크 요청을 진행하는 메소드를 만들지 않고 하나의 타입(혹은 메소드)로 HTTP Request를 할 수 있도록 초점을 맞추고 아래와 같이 구현하였다. 
-     ```= swift 
+     ```swift 
     //MARK:-NetworkManager
     struct NetworkManager {
         :
@@ -114,7 +115,7 @@
                 }
             }.resume()
         }
-    }```
+    }
     
 </div>
 </details>
@@ -131,7 +132,7 @@
     - **NSObject를 채택한 이유**
     `UICollectionViewDataSource`가 `NSObjectProtocol`을 상속받고 있음. 이에따라 `UICollectionViewDataSource`를 준수하려면 `NSObjectProtocol`의 요구사항을 준수해야 됨.
 `NSObject` 클래스는 `NSObjectProtocol` 을 채택하고 준수한 타입임. 이에따라 `NSObject`를 상속받아 `UICollectionViewDataSource`의 요구사항을 준수 할 수 있게됨.
-        ```swift=
+        ```swift
         class OpenMarketDataSource: NSObject, 
                                     UICollectionViewDataSource {
 
@@ -140,7 +141,7 @@
 - cellForItemAt 메서드에서 셀을 구성하는 부분에, 이미지를 다운로드하거나, 캐시저장소에있는 이미지를 가져오도록 구성함. 해당 작업은 네트워크 구현이 필수적이라, 완료시점을 클로저로 넘겨주어 네트워크를 처리함. UI를 변경하는 cell.configure 메서드가 있기 때문에 main Thread에서 실행 될 수 있도록 함.
 
 - 이미지를 다운로드를 했을 경우 Notication으로 완료되었다는 시점을 알려주게 된다. 이는 계속 Notication을 Post할 여지가 있으므로 한번만 POST 할수 있도록 분기문을 작성함.
-    ```swift=
+    ```swift
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let taskIdentifier = imageLoader.downloadImage(reqeustURL: urlString, imageCachingKey: idNumber) { downloadImage in
         DispatchQueue.main.async {
@@ -158,7 +159,7 @@
     ```
 
 - CollectionView Layout은 Delegate를 사용한게 아닌 UICollectionViewFlowLayout 클래스 인스턴스를 만들어 레이아웃 설정을 해준 뒤, CollectionView에 적용시켜주었다.
-    ```swift=
+    ```swift
         struct Layout {
             static func generate(_ view: UIView) -> UICollectionViewFlowLayout {
             let layout = UICollectionViewFlowLayout()
@@ -198,7 +199,7 @@
 <div markdown="1">  
     
 - **`singleton`** 디자인 패턴을 이용해 구현한 **`ImageCacher`**
-    ``` swift=
+    ``` swift
     class ImageCacher: NSCache<NSNumber, UIImage> {
         static let shared = ImageCacher()
 
@@ -247,7 +248,7 @@
 - **`OpenMarketCollectionViewDelegate` 에서 scrollViewDidScroll 메소드를 사용하여 paging 구현**
     - **이유** : 사실 내부 코드에 대해 완벽하게 이해하고 있는것이 아니라서 코드를 작성할지 말지 많이 고민했는데 우선 기능을 구현해 보자는 마음으로 추가
     - 리드미를 작성하면서 공부한 scrollViewDIdScroll내부의 코드에 관하여 
-        ```= swift
+        ```swift
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
             // 화면에 보이는 영역의 가장 왼쪽 윗 상단의 CGPoint값 : contentOffSet 
             let offsetY = scrollView.contentOffset.y
@@ -286,7 +287,7 @@
  
 - 서버가 구축되기 이전에 서버가 전송하는 JSON 데이터를 오류없이 Decoding하는 것을 테스트하기 위해 OpenMarketTests 클래스에서 UnitTest를 진행했다. 
 - 디코딩한 데이터의 특정 페이지 혹은 특정 아이템의 속성을 추출하고 그 값이 예상 값과 맞는 메서드와 맞지 않는 메서드를 구현하였다. 
-    ```= swift
+    ```swift
     //성공케이스 
     func test_OpenMarketItems의_페이지가_1이다() {
             //given
@@ -382,7 +383,7 @@
 - **상황** : 셀이 이미지 다운로드 작업을 비동기로 시작할때, 재사용되어 다른 위치에서 이미지를 보여주는 에러
 
 - **첫 시도** : indexPath를 이용해 cell이 재사용 될 때 `collectionView(_:cellForItemAt)` 메소드가 실행된 `indexPath` 에서만 이미지를 반영하도록 함
-    ```= swift
+    ```swift
     // 코드예시
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         :
@@ -428,7 +429,7 @@
 
     3) body에 옵셔널을 벗기지 않고 입력함
         - httpBody에 들어가는 내용을 print를 이용해 확인해보았는데 아래와 같이 입력되는 것을 확인했다. 즉 Optional() 자체도 encode되어 입력되는 상태였다. 
-        ```= swift
+        ```swift
         for photo in image {
             body.append("--\(boundary + lineBreak)")
             body.append("Content-Disposition: form-data; name=\"\(photo?.key)\"; filename=\"\(photo?.filename)\"\(lineBreak)")
@@ -443,7 +444,7 @@
 
 ### 3. DataSource 와 Delegate가 분리된 상황에서 Model DATA를 여러군데에서 참조 할 수 있는 방법
     
-- 현재는 `View`에 보여질 데이터가 `DataSource`의 프로퍼티로 저장되어 있다. Delegate타입에도 해당 모델의 Data이 필요한 상황이 생겼다. 이에 우리는 Data 프로퍼티를 Static으로 선언하여서 타입프로퍼티로 만들어 다른곳에서 사용할 수 있도록 해결하였다. ![image](https://user-images.githubusercontent.com/71247008/131210377-b885482f-4186-4239-8e53-21a4d831959c.png)
+- 현재는 `View`에 보여질 데이터가 `DataSource`의 프로퍼티로 저장되어 있다. Delegate타입에도 해당 모델의 Data이 필요한 상황이 생겼다. 이에 우리는 Data 프로퍼티를 Static으로 선언하여서 타입프로퍼티로 만들어 다른곳에서 사용할 수 있도록 해결하였다. <img src="https://user-images.githubusercontent.com/71247008/131210377-b885482f-4186-4239-8e53-21a4d831959c.png" width="500" height="80">
     - 다만 이 방법은 지금 README를 작성하는 시간에 다시 코드를 보니 좋은 방법이 아닌 것 같다는 생각이 든다. 
         - 이유 : DataSource 타입 프로퍼티이기 때문에 DataSource가 교체되거나하는 상황에서 다시 DATA 모델은 어딘가에 생성해야 되기때문
     - 개선방향 : Data를 가지고 있는 타입을 따로 만드는 방법이 생각난다. 해당 타입은 **싱글턴**으로 구현하여 여러 곳에서 인스턴스를 접근 할 수 있도록 하는 방법이 좋을 것 같다.
@@ -452,7 +453,7 @@
 
 ### 4. Delegate타입을 따로 만들고 ViewController에서 할당 하였는데 반영되지 않는 문제 
 - **상황** : `CollectionViewDelegate` 타입을 따로 만들고 `ViewController` 타입의 `viewDidLoad`메서드에서 다음과 같이 구현했는데 에러메세지가 생김
-    ```swift=
+    ```swift
     viewDidLoad() {
         super.viewDidLoad()
         collectionView.delegate = OpenMarketDelegate()
@@ -463,7 +464,7 @@
 
 - **이유** : `UICollectionView`의 `dataSource`, `delegate`는 **weak property**이기 때문에 viewDidLoad내부에서 인스턴스를 만드는 것이 아니라 `ViewController`의 property로 delegate로 사용할 인슨턴스를 만든 후 해당 속성을 `viewDidLoad`메서드 내부에서 컬렉션뷰의 `delegate`로 할당해야한다. 
 - **해결** : 아래와 같이 리팩토링 진행
-    ```= swift
+    ```swift
     class ViewController {
         let delegate = OpenMarketDelegate()
         :  
@@ -531,7 +532,7 @@
 
 3. **CollectionView Cell의 역할 분리**
     - 현재 CollectionView Cell이 confirue 메서드에서 해당 indexPath에 맞는 Data를 받아 Cell View에 표시해주고 있음. 하지만 configure에서 Data를 받아서 분기처리를 진행 하고 있다.  곰곰히 우리가 생각 해 보았을 때 해당 역활은 View가 할일이 아닌 다른(VC)데에서 할 일 같다는 생각이 들었다. 하지만, 시간이 없는 관계로.. 이 부분을 해결 하지 못했다.
-```swift=
+```swift
  if item.stock == 0 {
         statusLabel.text = "품절"
         statusLabel.textColor = .systemYellow
@@ -556,7 +557,7 @@
 
 5. **Flowlayout 하드코딩 한 부분** 
 - Layout 타입 내부에서 UICollectionViewFlowLayout 객체를 return하는 메서드를 만들 때 내부 코드에 하드코딩이 많았다. 이 부분에 하드코딩을 어떻게 하면 줄일 수 있을지에 관한 고민이 부족했던 것 같다. 
-    ```=swift
+    ```swift
         static func generate(_ view: UIView) -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         let width = view.bounds.width / 2.2
@@ -604,7 +605,7 @@
     - Body는 리소스를 가져오는 Request는 보통 본문이 없다. 전달해야될 내용이 없기 때문이다. 일부 요청은 업데이트를 위해 서버에 데이터를 전송한다. POST시 그럴 확률이 높다. Data를 Body에 담아 request 요청을 한다.
     - Body의 종류는 단일 리소스, 각기 다른 리소스가 있을 경우 멀티파트를 사용한다.
     - Request HTTP 메시지 예시 
-    ``` swift=
+    ```swift
     POST / HTTP / 1.1                   <- 시작부분
     HOST: localhost:8000                <- header
     Content-Type: multipart/form-data;  <- header
@@ -637,7 +638,7 @@
     - URLRequest를 통하여 서버로 `request`를 보낼 때 어떤 HTTP Request Method를 사용할 것인지, 어떤 내용을 전송할 것인지 설정 할 수 있다. 
     - HTTPRequest의 setValue, addValue을 사용하여 헤더메시지를 설정하거나, 추가 할 수 있다. 
     - 프로젝트 URLRequest 적용사항.
-    ``` swift=
+    ```swift
     private static func createRequest(httpMethod: HTTPMethod, url: URL, body: Data?, _ contentType: ContentType) -> URLRequest {
         var request = URLRequest(url: url)
         request.setValue("\(contentType); boundary=\(Boundary.literal)", forHTTPHeaderField: "Content-Type")
@@ -676,7 +677,7 @@
 - 컬렉션뷰는 테이블뷰와 비슷한 구조를 가지고 있다. `View`에 나타내야하는 정보를 `DataSource`로 요구하며, 이벤트와 같은 기능을 `Delegate`로 구현하고 있다. 다만 다른점이 있다면, `CollectionViewFlowLayout` 으로 셀의 크기와 너비를 설정해주어야 한다.
 - 기본적으로 DataSource 구현은 TableView와 많이 닮아 있다. numberOfSections 메서드로 섹션의 갯수를 지정해 줄 수 있으며, numberOfItemsInSection 메서드로 섹션안에 셀이 얼마나 있어야 할지 알려주게 된다. 마지막으로 cellForItemAt 메서드로 셀을 생성하고, 해당 셀에 데이터를 주입시켜 반환을 시키면 된다.
 
-``` swift= 
+```swift
 //    섹션의 갯수를 설정하는 부분
 func numberOfSections(in collectionView: UICollectionView) -> Int {
         OpenMarketDataSource.openMarketItemList.count
