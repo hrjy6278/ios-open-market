@@ -32,7 +32,7 @@
     + [3.  Scrolling, Paging 구현 및 사용자 경험향상](#3----scrolling--paging----------------)
     + [4. 네트워크 무관테스트](#4--------------------------)
 - [III. 이를 위한 설계](#iii---------)
-  * [1. MVC 디자인 패턴🌟](#1-mvc---------)
+  * [1. MVC 디자인 패턴](#1-mvc---------)
   * [2. 네트워크 통신 타입, NetworkManager](#2-------------networkmanager)
   * [3. 컬렉션 뷰의 설계](#3----------)
   * [4. Scrolling, Paging 구현](#4-scrolling--paging---)
@@ -41,7 +41,7 @@
   * [5. 네트워크 무관 테스트](#5------------)
   * [6. 그 외 프로젝트 내부 코드와 이유](#6-------------------)
       - [7. 타입과 역할 분배](#7----------)
-- [IV. 💫Trouble Shooting](#iv---trouble-shooting)
+- [IV. 💫Trouble Shooting💫](#iv---trouble-shooting)
   * [1. LazyLoading Probelm](#1-lazyloading-probelm)
   * [2. HTTP Request POST시에 HTTP Message 503Error 가 Response 되는 에러!](#2-http-request-post---http-message-503error---response-------)
   * [3. DataSource 와 Delegate가 분리된 상황에서 Model DATA를 여러군데에서 참조 할 수 있는 방법](#3-datasource---delegate-----------model-data---------------------)
@@ -77,7 +77,7 @@
 
 ## III. 이를 위한 설계
 
-### 1. MVC 디자인 패턴🌟
+### 1. MVC 디자인 패턴
 
 ![](https://i.imgur.com/FkSumjC.png)
   
@@ -395,7 +395,7 @@ struct Layout {
 
 <br> 
 
-## IV. 💫Trouble Shooting
+## IV. 💫Trouble Shooting💫
 
 ### 1. LazyLoading Probelm
 - **상황** : 셀이 이미지 다운로드 작업을 비동기로 시작할때, 재사용되어 다른 위치에서 이미지를 보여주는 에러
