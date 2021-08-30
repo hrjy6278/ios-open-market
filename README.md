@@ -2,7 +2,7 @@
 # 🛒 오픈마켓 프로젝트
 ***팀 구성원* : *Tacocat(Ldoy), Jiss()***
 
-**프로젝트 기간 :** 
+**프로젝트 기간 : 2021.08.09 ~ 08.20** 
 
 **그라운드 룰즈** 
 <details>
@@ -27,7 +27,7 @@
 </details>
 
 ## 목차 
-[I.앱동작](##-i.-앱-동작) <br>
+[I.앱동작](##-i-앱-동작) <br>
 [II.요구기능](##-ii-요구-기능) <br>
 [III.이를 위한 설계](##-iii-이를-위한-설계) <br>
 [IV.Trouble Shooting](##-iv-💫Trouble-Shooting) <br>
@@ -35,7 +35,7 @@
 [VI.학습내용](##vi-관련-학습-내용)  <br>
 
 
-## I. 앱 동작 
+## I. 앱 동작
 ![Simulator Screen Recording - iPhone 12 - 2021-08-27 at 15 04 23](https://user-images.githubusercontent.com/71247008/131079919-cfbaccc2-beea-49cf-a79a-8f41b0d0f38c.gif)
 
 <br><br>
