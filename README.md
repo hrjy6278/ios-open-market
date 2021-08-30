@@ -5,12 +5,17 @@
 **프로젝트 기간 :** 
 
 **그라운드 룰즈** 
+<details>
+<summary>UML</summary>
+<div markdown="1">     
 - 커밋단위 : 메소드, 타입별로 커밋
 - 커밋메세지 : 카르마스타일
 - 브랜치 : main > 3-jiss > STEPn 형태로 진행 
 - 팀 내부 규칙
     - 프로젝트의 진행 보다는 `왜` 에 초점을 맞추기 
     - 한숨금지
+</div>
+</details>
 
 UML
 <details>
@@ -22,11 +27,11 @@ UML
 </details>
 
 ## 목차 
-[앱동작](##-앱-동작)
-[요구기능](##-요구-기능)
-[이를 위한 설계](##-이를-위한-설계)
-[Trouble Shooting](##-💫Trouble-Shooting)
-[학습내용](##-관련-학습-내용) 
+[앱동작](##-앱-동작) <br>
+[요구기능](##-요구-기능) <br>
+[이를 위한 설계](##-이를-위한-설계) <br>
+[Trouble Shooting](##-💫Trouble-Shooting) <br>
+[학습내용](##-관련-학습-내용)  <br>
 
 
 ## 앱 동작 
