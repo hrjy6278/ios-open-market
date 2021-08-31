@@ -87,9 +87,8 @@
 <summary> NetworkManager 설계와 이유 </summary>
 <div markdown="1">       
 
-- [ HTTP 학습내용 요약 ](####1.-HTTP)
- - 서버API분석 결과 GET, POST, PUSH, PUT, DELETE 의 메소드에 따라 Response Message의 내용이 달라짐을 알 수 있었다. 
- - 각각의 HTTPMethod 마다 네트워크 요청을 진행하는 메소드를 만들지 않고 하나의 타입(혹은 메소드)로 HTTP Request를 할 수 있도록 초점을 맞추고 아래와 같이 구현하였다. 
+- 서버API분석 결과 GET, POST, PUSH, PUT, DELETE 의 메소드에 따라 Response Message의 내용이 달라짐을 알 수 있었다. 
+- 각각의 HTTPMethod 마다 네트워크 요청을 진행하는 메소드를 만들지 않고 하나의 타입(혹은 메소드)로 HTTP Request를 할 수 있도록 초점을 맞추고 아래와 같이 구현하였다. 
      ```swift 
     //MARK:-NetworkManager
     struct NetworkManager {
@@ -122,7 +121,6 @@
 <br>
 
 ### 3. 컬렉션 뷰의 설계 
-[컬렉션뷰 학습내용 요약](####-4.-uicollectionview)
 <details>
 <summary> CollectionView 설계코드와 그 이유 </summary>
 <div markdown="1">       
